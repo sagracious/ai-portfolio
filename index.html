@@ -3,18 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI/ML Engineer Portfolio</title>
+  <title>Carl Carlos — AI/ML Engineer</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Full size">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  </div>
+
   <header>
     <div class="container">
-      <h1>AI/ML Engineer</h1>
+      <div class="header-badge">Open to Work</div>
+      <h1>Carl Carlos</h1>
+      <p class="subtitle">AI/ML Engineer</p>
       <p class="tagline">Building intelligent systems with LLMs, RAG pipelines, and agentic workflows.</p>
       <div class="links">
-        <a href="https://github.com/YOUR_USERNAME" target="_blank">GitHub</a>
-        <a href="mailto:YOUR_EMAIL">Email</a>
+        <a href="https://github.com/sagracious" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="mailto:cbacarlos@mymail.mapua.edu.ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email
+        </a>
       </div>
     </div>
   </header>
@@ -43,20 +59,43 @@
 
       <!-- Project 1: Agentic RAG -->
       <div class="project-card">
-        <div class="project-images">
-          <img src="images/rag-step1.png" alt="Agentic RAG - Load Sources" class="project-img active">
-          <img src="images/rag-step2.png" alt="Agentic RAG - Query" class="project-img">
-          <img src="images/rag-step3.png" alt="Agentic RAG - Response" class="project-img">
-          <img src="images/rag-step4.png" alt="Agentic RAG - Evaluation" class="project-img">
-          <div class="img-nav">
-            <button class="nav-btn" onclick="changeImage(this, -1)">&#8592;</button>
-            <span class="img-counter">1 / 4</span>
-            <button class="nav-btn" onclick="changeImage(this, 1)">&#8594;</button>
+        <div class="project-visual">
+          <div class="image-carousel" id="rag-carousel">
+            <img src="images/rag-step1.png" alt="Agentic RAG - Load Sources" class="project-img active" onclick="openLightbox(this.src)">
+            <img src="images/rag-step2.png" alt="Agentic RAG - Query" class="project-img" onclick="openLightbox(this.src)">
+            <img src="images/rag-step3.png" alt="Agentic RAG - Response" class="project-img" onclick="openLightbox(this.src)">
+            <img src="images/rag-step4.png" alt="Agentic RAG - Evaluation" class="project-img" onclick="openLightbox(this.src)">
+            <div class="img-nav">
+              <button class="nav-btn" onclick="changeImage('rag-carousel', -1)">&#8592;</button>
+              <span class="img-counter">1 / 4</span>
+              <button class="nav-btn" onclick="changeImage('rag-carousel', 1)">&#8594;</button>
+            </div>
+            <p class="img-hint">Click image to enlarge</p>
           </div>
         </div>
         <div class="project-info">
-          <h3>Agentic RAG System</h3>
-          <p>A multi-source Retrieval-Augmented Generation system with agent-based source routing. The agent evaluates multiple web sources using cosine similarity on embeddings, selects the most relevant source, retrieves top chunks, and generates grounded responses using Google Gemini.</p>
+          <div class="project-header">
+            <h3>Agentic RAG System</h3>
+            <span class="project-type">Multi-source RAG with Agent Routing</span>
+          </div>
+          <p>A Retrieval-Augmented Generation system where an agent evaluates multiple web sources using cosine similarity on embeddings, selects the most relevant source, retrieves top chunks, and generates grounded responses using Google Gemini.</p>
+          <div class="code-showcase">
+            <div class="code-label">Agent source selection logic</div>
+            <pre><code><span class="kw">def</span> <span class="fn">sel_source</span>(query, output_widget):
+    query_embedding = embedder(query)
+    best_source, best_similarity = <span class="str">""</span>, <span class="num">0.0</span>
+
+    <span class="kw">for</span> i, doc_data <span class="kw">in</span> enumerate(documents_data):
+        similarity = cos_similarity(
+            query_embedding,
+            doc_data[<span class="str">'summary_embedding'</span>]
+        )
+        <span class="kw">if</span> similarity > best_similarity:
+            best_similarity = similarity
+            best_index = i
+
+    <span class="kw">return</span> best_source, best_similarity, best_index</code></pre>
+          </div>
           <div class="tech-tags">
             <span>Google Gemini</span>
             <span>Embeddings</span>
@@ -65,25 +104,96 @@
             <span>ipywidgets</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/YOUR_USERNAME/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-primary">Open in Colab</a>
-            <a href="https://github.com/YOUR_USERNAME/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Open in Colab
+            </a>
+            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
           </div>
+          <p class="api-note">Requires a Google AI Studio API key (free at aistudio.google.com)</p>
         </div>
       </div>
 
       <!-- Project 2: YouTube Chat -->
       <div class="project-card reverse">
-        <div class="project-images">
-          <div class="placeholder-img">
-            <div class="placeholder-content">
-              <span class="placeholder-icon">&#9654;</span>
-              <span>YouTube Transcript Chat</span>
+        <div class="project-visual">
+          <div class="code-output-block">
+            <div class="block-tabs">
+              <span class="block-tab active">Example 1</span>
+              <span class="block-tab">Example 2</span>
+              <span class="block-tab">Example 3</span>
+            </div>
+            <div class="block-content active" id="yt-ex1">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=3JW732GrMdg"</span>
+db = create_db_from_youtube_video_url(video_url)
+
+query = <span class="str">"what is this video about?"</span>
+response, docs = get_response_from_query(db, query)
+print(response)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>This video is about using PostgreSQL in web
+development and exploring various unorthodox
+ways to utilize PostgreSQL for different tasks.
+The video highlights advantages such as working
+with unstructured data using JSON, implementing
+cron jobs, utilizing vector data types for AI
+applications, and building a full-text search
+engine.</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="yt-ex2">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=_IOh0S_L3C4"</span>
+db = create_db_from_youtube_video_url(video_url)
+
+query = <span class="str">"what is AI flaw that the video talks about?"</span>
+response, docs = get_response_from_query(db, query)
+print(response)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>The video is talking about the flaw in AI models,
+specifically the current machine learning
+algorithms. The flaw is that there is a limit to
+the current models' capabilities, and they
+cannot be trained to reach perfection due to the
+lack of sufficient training data.</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="yt-ex3">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=P-TANCVoHlc"</span>
+db = create_db_from_youtube_video_url(video_url)
+
+query = <span class="str">"why isn't technology fun anymore?"</span>
+response, docs = get_response_from_query(db, query)
+print(response)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>Technology isn't fun anymore because many
+advancements are driven by manipulation,
+surveillance, and profit rather than a genuine
+desire to solve problems. The speaker mentions
+advancements often feel predatory and designed
+to be addictive rather than enjoyable additions
+to one's life.</code></pre>
+              </div>
             </div>
           </div>
         </div>
         <div class="project-info">
-          <h3>YouTube Transcript Chat</h3>
-          <p>An interactive chatbot that ingests YouTube video transcripts, splits them into chunks, builds a FAISS vector store, and answers questions using similarity search + OpenAI GPT. Users can query any YouTube video conversationally.</p>
+          <div class="project-header">
+            <h3>YouTube Transcript Chat</h3>
+            <span class="project-type">RAG + LangChain</span>
+          </div>
+          <p>An interactive chatbot that ingests YouTube video transcripts, splits them into chunks, builds a FAISS vector store, and answers questions using similarity search + OpenAI GPT.</p>
           <div class="tech-tags">
             <span>LangChain</span>
             <span>FAISS</span>
@@ -92,25 +202,101 @@
             <span>Vector Search</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/YOUR_USERNAME/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-primary">Open in Colab</a>
-            <a href="https://github.com/YOUR_USERNAME/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Open in Colab
+            </a>
+            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
           </div>
+          <p class="api-note">Requires an OpenAI API key</p>
         </div>
       </div>
 
       <!-- Project 3: LangChain Cookbook -->
       <div class="project-card">
-        <div class="project-images">
-          <div class="placeholder-img">
-            <div class="placeholder-content">
-              <span class="placeholder-icon">&#128218;</span>
-              <span>LangChain Cookbook</span>
+        <div class="project-visual">
+          <div class="code-output-block">
+            <div class="block-tabs">
+              <span class="block-tab active">Embeddings</span>
+              <span class="block-tab">Prompt Template</span>
+              <span class="block-tab">Structured Output</span>
+            </div>
+            <div class="block-content active" id="lc-ex1">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>embeddings = OpenAIEmbeddings()
+
+text = <span class="str">"Let's play video games!"</span>
+text_embedding = embeddings.embed_query(text)
+
+<span class="kw">print</span>(<span class="str">f"Sample: <span class="fn">{text_embedding[:5]}</span>..."</span>)
+<span class="kw">print</span>(<span class="str">f"Length: <span class="fn">{len(text_embedding)}</span>"</span>)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>Sample: [-0.0104, -0.0160, 0.0022,
+         -0.0244, -0.0153]...
+Length: 1536</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="lc-ex2">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>template = <span class="str">"""
+I really want to learn the {language} language.
+How should I do it?
+Respond in one short sentence
+"""</span>
+
+prompt = PromptTemplate(
+    input_variables=[<span class="str">"language"</span>],
+    template=template,
+)
+
+final_prompt = prompt.format(language=<span class="str">'Japanese'</span>)
+<span class="kw">print</span>(llm(final_prompt))</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>Immerse yourself in the language through
+classes, online resources, and practice
+with native speakers.</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="lc-ex3">
+              <div class="block-code">
+                <span class="block-label">Code</span>
+                <pre><code>response_schemas = [
+    ResponseSchema(name=<span class="str">"computer_game"</span>,
+        description=<span class="str">"A computer game"</span>),
+    ResponseSchema(name=<span class="str">"game_definition"</span>,
+        description=<span class="str">"Explanation of the game"</span>),
+]
+
+output_parser = StructuredOutputParser
+    .from_response_schemas(response_schemas)
+
+llm_output = llm(prompt.format(user_input=<span class="str">"Dota 2"</span>))
+output_parser.parse(llm_output)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>{
+  "computer_game": "Dota 2",
+  "game_definition": "Dota 2 is a popular
+  multiplayer online battle arena (MOBA) game
+  developed by Valve Corporation..."
+}</code></pre>
+              </div>
             </div>
           </div>
         </div>
         <div class="project-info">
-          <h3>LangChain Cookbook</h3>
-          <p>A comprehensive reference covering LangChain fundamentals: chat models, prompt templates, few-shot example selectors with semantic similarity, structured output parsing, document loaders, text splitters, vector stores (FAISS, Chroma, Pinecone), and retrieval QA chains.</p>
+          <div class="project-header">
+            <h3>LangChain Cookbook</h3>
+            <span class="project-type">Comprehensive Reference</span>
+          </div>
+          <p>A hands-on reference covering LangChain fundamentals: chat models, prompt templates, few-shot example selectors with semantic similarity, structured output parsing, document loaders, text splitters, vector stores, and retrieval QA chains.</p>
           <div class="tech-tags">
             <span>LangChain</span>
             <span>OpenAI</span>
@@ -119,8 +305,41 @@
             <span>Prompt Engineering</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/YOUR_USERNAME/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-primary">Open in Colab</a>
-            <a href="https://github.com/YOUR_USERNAME/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Open in Colab
+            </a>
+            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+          </div>
+          <p class="api-note">Requires an OpenAI API key</p>
+        </div>
+      </div>
+
+      <!-- Project 4: Sentiment Analyzer -->
+      <div class="project-card reverse">
+        <div class="project-visual">
+          <div class="image-carousel" id="sent-carousel">
+            <img src="images/sentiment-out1.png" alt="Sentiment Analyzer Output 1" class="project-img active" onclick="openLightbox(this.src)">
+            <img src="images/sentiment-out2.png" alt="Sentiment Analyzer Output 2" class="project-img" onclick="openLightbox(this.src)">
+            <img src="images/sentiment-act3.png" alt="Sentiment Analyzer Activity" class="project-img" onclick="openLightbox(this.src)">
+            <div class="img-nav">
+              <button class="nav-btn" onclick="changeImage('sent-carousel', -1)">&#8592;</button>
+              <span class="img-counter">1 / 3</span>
+              <button class="nav-btn" onclick="changeImage('sent-carousel', 1)">&#8594;</button>
+            </div>
+            <p class="img-hint">Click image to enlarge</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-header">
+            <h3>Sentiment Analyzer</h3>
+            <span class="project-type">NLP Classification</span>
+          </div>
+          <p>A sentiment analysis tool that classifies text as positive, negative, or neutral using NLP techniques. Built as part of coursework exploring natural language processing and text classification.</p>
+          <div class="tech-tags">
+            <span>NLP</span>
+            <span>Text Classification</span>
+            <span>Python</span>
           </div>
         </div>
       </div>
@@ -130,21 +349,51 @@
 
   <footer>
     <div class="container">
-      <p>Replace YOUR_USERNAME and YOUR_EMAIL above, then push to GitHub and enable Pages.</p>
+      <p>Carl Bryant Carlos &copy; 2026</p>
     </div>
   </footer>
 
   <script>
-    function changeImage(btn, direction) {
-      const card = btn.closest('.project-card');
-      const images = card.querySelectorAll('.project-img');
-      const counter = card.querySelector('.img-counter');
+    // Image carousel
+    function changeImage(carouselId, direction) {
+      const carousel = document.getElementById(carouselId);
+      const images = carousel.querySelectorAll('.project-img');
+      const counter = carousel.querySelector('.img-counter');
       let currentIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
       images[currentIndex].classList.remove('active');
       currentIndex = (currentIndex + direction + images.length) % images.length;
       images[currentIndex].classList.add('active');
       counter.textContent = (currentIndex + 1) + ' / ' + images.length;
     }
+
+    // Code output tab switching
+    document.querySelectorAll('.block-tabs').forEach(tabs => {
+      tabs.querySelectorAll('.block-tab').forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+          const block = tabs.closest('.code-output-block');
+          block.querySelectorAll('.block-tab').forEach(t => t.classList.remove('active'));
+          block.querySelectorAll('.block-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          block.querySelectorAll('.block-content')[index].classList.add('active');
+        });
+      });
+    });
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
   </script>
 
 </body>
