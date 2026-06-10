@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carl Carlos — AI/ML Engineer</title>
+  <meta name="description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, and agentic workflows built with Python, PyTorch, LangChain, and AWS.">
+  <meta property="og:title" content="Carl Bryant Carlos — AI/ML Engineer">
+  <meta property="og:description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, and agentic workflows built with Python, PyTorch, LangChain, and AWS.">
+  <meta property="og:type" content="website">
+  <title>Carl Bryant Carlos — AI/ML Engineer</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -11,44 +15,103 @@
 <body>
 
   <!-- Lightbox Modal -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" src="" alt="Full size">
-    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <img id="lightbox-img" src="" alt="Full size" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+    <button class="lightbox-prev" onclick="navigateLightbox(event, -1)">&#8592;</button>
+    <button class="lightbox-next" onclick="navigateLightbox(event, 1)">&#8594;</button>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
   <header>
     <div class="container">
       <div class="header-badge">Open to Work</div>
-      <h1>Carl Carlos</h1>
+      <h1>Carl Bryant Carlos</h1>
       <p class="subtitle">AI/ML Engineer</p>
-      <p class="tagline">Building intelligent systems with LLMs, RAG pipelines, and agentic workflows.</p>
+      <p class="tagline">Building intelligent platforms with LLMs, RAG pipelines, and agentic workflows.</p>
       <div class="links">
-        <a href="https://github.com/sagracious" target="_blank">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
+        <a href="https://www.linkedin.com/in/carlcarlos/" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="Carlos - Resume.pdf" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Resume
         </a>
         <a href="mailto:cbacarlos@mymail.mapua.edu.ph">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           Email
         </a>
       </div>
+      <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <span class="toggle-icon sun">&#9728;</span>
+        <span class="toggle-icon moon">&#9790;</span>
+      </button>
     </div>
   </header>
+
+  <section class="about">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>Hello. My background is in Computer Science with specialization in AI from Mapúa University, with hands-on experience building end-to-end ML pipelines, RAG systems, and agentic workflows. During my IT internship at Geoplan Philippines, I worked directly with clients on IoT proof-of-concept deployments, integrated devices into their monitoring platforms, and delivered technical presentations for both internal teams and client stakeholders. I've earned AWS certifications in solutions architecture and AI, and my thesis covers few-shot occupancy detection using Wi-Fi sensing. I love working with a team to build AI solutions that solve real problems. If my background aligns with what you're looking for, I'd love to chat.</p>
+    </div>
+  </section>
 
   <section class="skills">
     <div class="container">
       <h2>Skills</h2>
-      <div class="skills-grid">
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">LangChain</span>
-        <span class="skill-tag">RAG</span>
-        <span class="skill-tag">AI Agents</span>
-        <span class="skill-tag">Vector Databases</span>
-        <span class="skill-tag">Embeddings</span>
-        <span class="skill-tag">Google Gemini</span>
-        <span class="skill-tag">OpenAI API</span>
-        <span class="skill-tag">FAISS</span>
-        <span class="skill-tag">Scikit-learn</span>
+      <div class="skills-grid-layout">
+        <div class="skill-card skill-card--code">
+          <h3><span class="skill-card-icon">&lt;/&gt;</span> Programming</h3>
+          <div class="skill-card-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">C/C++</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Bash</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+        <div class="skill-card skill-card--ml">
+          <h3><span class="skill-card-icon">&#9881;</span> Machine Learning &amp; AI</h3>
+          <div class="skill-card-tags">
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">LangChain</span>
+            <span class="skill-tag">Scikit-learn</span>
+            <span class="skill-tag">RAG</span>
+            <span class="skill-tag">AI Agents</span>
+            <span class="skill-tag">FAISS</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">Orange</span>
+          </div>
+        </div>
+        <div class="skill-card skill-card--cloud">
+          <h3><span class="skill-card-icon">&#9729;</span> Cloud &amp; DevOps</h3>
+          <div class="skill-card-tags">
+            <span class="skill-tag">AWS (EC2, S3, IAM)</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">GitHub Actions</span>
+            <span class="skill-tag">CI/CD</span>
+            <span class="skill-tag">Nginx</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Node-RED</span>
+          </div>
+        </div>
+        <div class="skill-card skill-card--iot">
+          <h3><span class="skill-card-icon">&#9741;</span> Networking &amp; IoT</h3>
+          <div class="skill-card-tags">
+            <span class="skill-tag">TCP/IP</span>
+            <span class="skill-tag">DNS</span>
+            <span class="skill-tag">DHCP</span>
+            <span class="skill-tag">CGNAT</span>
+            <span class="skill-tag">LoRaWAN</span>
+            <span class="skill-tag">Wireshark</span>
+            <span class="skill-tag">Nmap</span>
+            <span class="skill-tag">Raspberry Pi</span>
+            <span class="skill-tag">Arduino</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -56,9 +119,157 @@
   <section class="projects">
     <div class="container">
       <h2>Projects</h2>
-      <p class="projects-intro">A selection of AI/ML projects built during my university coursework, exploring LLMs, retrieval-augmented generation, and natural language processing.</p>
+      <p class="projects-intro">End-to-end AI/ML projects spanning few-shot learning with Wi-Fi sensing, retrieval-augmented generation, and agentic workflows.</p>
 
-      <!-- Project 1: Agentic RAG -->
+      <!-- Project 1: Thesis — Few-Shot Occupancy Detection -->
+      <div class="project-card">
+        <div class="project-visual">
+          <div class="code-output-block">
+            <div class="block-tabs">
+              <span class="block-tab active">Data Pipeline</span>
+              <span class="block-tab">CNN Baseline</span>
+              <span class="block-tab">ProtoNet Few-Shot</span>
+            </div>
+            <div class="block-content active" id="thesis-ex1">
+              <div class="block-code">
+                <span class="block-label">Quality filter → normalize → window</span>
+                <pre><code><span class="cm"># Per-trace ETL: filter bad frames, z-score, window</span>
+<span class="kw">for</span> r <span class="kw">in</span> trace_records:
+    f = r[<span class="str">"data"</span>]  <span class="cm"># (P, 234, 5) complex → real</span>
+
+    <span class="cm"># 1. Drop NaN/Inf and all-zero frames</span>
+    valid = np.all(np.isfinite(f), axis=(<span class="num">1</span>,<span class="num">2</span>))
+    valid &= ~np.all(f == <span class="num">0</span>, axis=(<span class="num">1</span>,<span class="num">2</span>))
+    f = f[valid]
+
+    <span class="cm"># 2. Per-channel z-score (prevents amplitude skew)</span>
+    μ = f.mean(axis=(<span class="num">0</span>,<span class="num">1</span>), keepdims=<span class="kw">True</span>)
+    σ = f.std(axis=(<span class="num">0</span>,<span class="num">1</span>), keepdims=<span class="kw">True</span>)
+    σ = np.where(σ == <span class="num">0</span>, <span class="num">1.0</span>, σ)
+    f = (f - μ) / σ
+
+    <span class="cm"># 3. Non-overlapping temporal windows</span>
+    W = f.shape[<span class="num">0</span>] // <span class="num">5</span>
+    r[<span class="str">"windows"</span>] = f[:W*<span class="num">5</span>].reshape(W, <span class="num">5</span>, <span class="num">234</span>, <span class="num">5</span>)</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Pipeline summary</span>
+                <pre><code>27 traces loaded → 27,785 raw frames
+  M7   9 traces (Wi-Fi 5, 234×3×1)
+  X7   9 traces (Wi-Fi 6, 250×3×2)
+  X300 9 traces (Wi-Fi 6, 250×3×2)
+
+After truncation: all → (P, 234, 3, 1)
+Complex → real: (P, 234, 3) → (P, 234, 5)
+Quality filter: 0 frames removed
+Z-score: per-trace, per-channel
+Windowing (T=5): 5,729 windows
+
+Output shape: (W, 5, 234, 5) (T, K, C)
+Class 0 (empty):     690 windows
+Class 1 (occupied):  5,039 windows
+  M7     648  |  X7   4,531  |  X300   550</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="thesis-ex2">
+              <div class="block-code">
+                <span class="block-label">CNN encoder + Focal Loss</span>
+                <pre><code><span class="kw">class</span> <span class="fn">CNNEncoder</span>(nn.Module):
+    <span class="str">"""4-layer 2D CNN with BN + MaxPool"""</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, in_channels=<span class="num">5</span>,
+                 embed_dim=<span class="num">128</span>):
+        <span class="kw">super</span>().__init__()
+        self.layer1 = conv_block(in_channels, embed_dim)
+        self.layer2 = conv_block(embed_dim, embed_dim)
+        self.layer3 = conv_block(embed_dim, embed_dim)
+        self.layer4 = nn.Sequential(
+            nn.Conv2d(embed_dim, embed_dim, <span class="num">3</span>,
+                      padding=<span class="num">1</span>, bias=<span class="kw">False</span>),
+            nn.BatchNorm2d(embed_dim),
+            nn.ReLU(inplace=<span class="kw">True</span>),
+            nn.AdaptiveAvgPool2d((<span class="num">1</span>, <span class="num">1</span>)))
+
+<span class="kw">class</span> <span class="fn">FocalLoss</span>(nn.Module):
+    <span class="str">"""FL(p_t) = -α(1-p_t)^γ log(p_t)
+    Down-weights majority class to handle
+    690 vs 5,039 class imbalance."""</span></code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Per-device results (3-fold CV)</span>
+                <pre><code>Device   Accuracy   F1      AUC-PR
+──────   ────────   ────    ──────
+M7       0.660      0.796   0.964
+X7       0.786      0.869   0.912
+X300     0.759      0.853   0.972
+──────   ────────   ────    ──────
+ALL      0.735      0.839   0.949
+
+Total params: 114,114
+High recall (0.973) — catches most
+occupied windows despite class imbalance</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="thesis-ex3">
+              <div class="block-code">
+                <span class="block-label">ProtoNet episodic training</span>
+                <pre><code><span class="kw">def</span> <span class="fn">proto_loss_and_acc</span>(encoder, episode, device):
+    <span class="str">"""Support → prototypes → neg. squared-
+    Euclidean distance → softmax CE loss"""</span>
+    prototypes = torch.stack([
+        s_emb[sy == cls].mean(dim=<span class="num">0</span>)
+        <span class="kw">for</span> cls <span class="kw">in</span> [<span class="num">0</span>, <span class="num">1</span>]])
+    dists = torch.cdist(
+        q_emb.unsqueeze(<span class="num">0</span>),
+        prototypes.unsqueeze(<span class="num">0</span>),
+        p=<span class="num">2</span>).squeeze(<span class="num">0</span>) ** <span class="num">2</span>
+    loss = F.cross_entropy(-dists, qy)
+    preds = dists.argmin(dim=<span class="num">1</span>)
+    <span class="kw">return</span> loss, <span class="fn">float</span>((preds == qy).float().mean())</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Cross-position PR-AUC + significance</span>
+                <pre><code>Cross-position grand mean:
+  K=1    AUC-PR 0.949  |  F1 0.674
+  K=3    AUC-PR 0.968  |  F1 0.806
+  K=5    AUC-PR 0.977  |  F1 0.843
+  K=10   AUC-PR 0.980  |  F1 0.846
+
+Wilcoxon signed-rank (Bonferroni α=0.0167):
+  K=1  vs K=3:  W=4.0  p=0.0137  ✓
+  K=3  vs K=5:  W=2.0  p=0.0117  ✓
+  K=5  vs K=10: W=2.0  p=0.0117  ✓
+  All three significant — monotonic
+  improvement on PR-AUC with each K
+
+M7 best fold (K=10, Fold 2):
+  Accuracy 0.894 | Precision 1.000
+  Recall   0.845 | F1  0.912
+  AUC-PR   0.996</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-header">
+            <h3>Few-Shot Occupancy Detection via Wi-Fi Sensing</h3>
+            <span class="project-type">Thesis — BFI Channel State Information</span>
+          </div>
+          <p>End-to-end ML pipeline for binary occupancy detection using Wi-Fi Beamforming Feedback Information (BFI). Built a full ETL pipeline — quality filter, per-channel z-score normalization, and temporal windowing — producing 5,729 windows from 27 traces across 3 smartphone models.</p>
+          <p>Trained a supervised CNN baseline with Focal Loss and a WeightedRandomSampler to handle 1:7.3 class imbalance, achieving 94.9% AUC-PR. Then built a ProtoNet few-shot learner with Adam optimizer (lr=0.001, 100 epochs), session-level random undersampling, and stratified episode sampling.</p>
+          <p>Cross-position AUC-PR reached 98.0% at K=10 with 95% less labeling cost than retraining from scratch — all gains statistically significant via Bonferroni-corrected Wilcoxon signed-rank tests.</p>
+          <div class="tech-tags">
+            <span>PyTorch</span>
+            <span>CNN</span>
+            <span>ProtoNet</span>
+            <span>Few-Shot Learning</span>
+            <span>Focal Loss</span>
+            <span>Wi-Fi Sensing</span>
+            <span>Cross-Device Generalization</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: Agentic RAG -->
       <div class="project-card">
         <div class="project-visual">
           <div class="code-output-block">
@@ -167,10 +378,10 @@ Relevance: 92.41%</code></pre>
             </div>
           </div>
           <div class="thumbnail-row">
-            <img src="images/rag-step1.png" alt="RAG Screenshot 1" class="thumbnail" onclick="openLightbox(this.src)">
-            <img src="images/rag-step2.png" alt="RAG Screenshot 2" class="thumbnail" onclick="openLightbox(this.src)">
-            <img src="images/rag-step3.png" alt="RAG Screenshot 3" class="thumbnail" onclick="openLightbox(this.src)">
-            <img src="images/rag-step4.png" alt="RAG Screenshot 4" class="thumbnail" onclick="openLightbox(this.src)">
+            <img src="images/rag-step1.png" alt="RAG Screenshot 1" class="thumbnail" loading="lazy" onclick="openLightbox(this.src, ['images/rag-step1.png','images/rag-step2.png','images/rag-step3.png','images/rag-step4.png'])">
+            <img src="images/rag-step2.png" alt="RAG Screenshot 2" class="thumbnail" loading="lazy" onclick="openLightbox(this.src, ['images/rag-step1.png','images/rag-step2.png','images/rag-step3.png','images/rag-step4.png'])">
+            <img src="images/rag-step3.png" alt="RAG Screenshot 3" class="thumbnail" loading="lazy" onclick="openLightbox(this.src, ['images/rag-step1.png','images/rag-step2.png','images/rag-step3.png','images/rag-step4.png'])">
+            <img src="images/rag-step4.png" alt="RAG Screenshot 4" class="thumbnail" loading="lazy" onclick="openLightbox(this.src, ['images/rag-step1.png','images/rag-step2.png','images/rag-step3.png','images/rag-step4.png'])">
           </div>
         </div>
         <div class="project-info">
@@ -197,7 +408,7 @@ Relevance: 92.41%</code></pre>
         </div>
       </div>
 
-      <!-- Project 2: YouTube Chat -->
+      <!-- Project 3: YouTube Chat -->
       <div class="project-card reverse">
         <div class="project-visual">
           <div class="code-output-block">
@@ -208,7 +419,7 @@ Relevance: 92.41%</code></pre>
             </div>
             <div class="block-content active" id="yt-ex1">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Ingest transcript + query</span>
                 <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=3JW732GrMdg"</span>
 db = create_db_from_youtube_video_url(video_url)
 
@@ -230,7 +441,7 @@ engine.</code></pre>
             </div>
             <div class="block-content" id="yt-ex2">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Multi-video context retrieval</span>
                 <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=_IOh0S_L3C4"</span>
 db = create_db_from_youtube_video_url(video_url)
 
@@ -250,7 +461,7 @@ lack of sufficient training data.</code></pre>
             </div>
             <div class="block-content" id="yt-ex3">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Cross-video Q&A</span>
                 <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=P-TANCVoHlc"</span>
 db = create_db_from_youtube_video_url(video_url)
 
@@ -295,7 +506,7 @@ to one's life.</code></pre>
         </div>
       </div>
 
-      <!-- Project 3: LangChain Cookbook -->
+      <!-- Project 4: LangChain Cookbook -->
       <div class="project-card">
         <div class="project-visual">
           <div class="code-output-block">
@@ -306,7 +517,7 @@ to one's life.</code></pre>
             </div>
             <div class="block-content active" id="lc-ex1">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Embedding generation</span>
                 <pre><code>embeddings = OpenAIEmbeddings()
 
 text = <span class="str">"Let's play video games!"</span>
@@ -324,7 +535,7 @@ Length: 1536</code></pre>
             </div>
             <div class="block-content" id="lc-ex2">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Prompt formatting</span>
                 <pre><code>template = <span class="str">"""
 I really want to learn the {language} language.
 How should I do it?
@@ -348,7 +559,7 @@ with native speakers.</code></pre>
             </div>
             <div class="block-content" id="lc-ex3">
               <div class="block-code">
-                <span class="block-label">Code</span>
+                <span class="block-label">Schema + output parsing</span>
                 <pre><code>response_schemas = [
     ResponseSchema(name=<span class="str">"computer_game"</span>,
         description=<span class="str">"A computer game"</span>),
@@ -398,13 +609,13 @@ output_parser.parse(llm_output)</code></pre>
         </div>
       </div>
 
-      <!-- Project 4: Sentiment Analyzer -->
+      <!-- Project 5: Sentiment Analyzer -->
       <div class="project-card reverse">
         <div class="project-visual">
           <div class="image-carousel" id="sent-carousel">
-            <img src="images/sentiment-out1.png" alt="Sentiment Analyzer Output 1" class="project-img active" onclick="openLightbox(this.src)">
-            <img src="images/sentiment-out2.png" alt="Sentiment Analyzer Output 2" class="project-img" onclick="openLightbox(this.src)">
-            <img src="images/sentiment-act3.png" alt="Sentiment Analyzer Activity" class="project-img" onclick="openLightbox(this.src)">
+            <img src="images/sentiment-act3.png" alt="Sentiment Analyzer Activity" class="project-img active" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
+            <img src="images/sentiment-out2.png" alt="Sentiment Analyzer Output 2" class="project-img" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
+            <img src="images/sentiment-out1.png" alt="Sentiment Analyzer Output 1" class="project-img" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
             <div class="img-nav">
               <button class="nav-btn" onclick="changeImage('sent-carousel', -1)">&#8592;</button>
               <span class="img-counter">1 / 3</span>
@@ -418,7 +629,7 @@ output_parser.parse(llm_output)</code></pre>
             <h3>Sentiment Analyzer</h3>
             <span class="project-type">NLP Classification</span>
           </div>
-          <p>A sentiment analysis tool that classifies text as positive, negative, or neutral using NLP techniques. Built as part of coursework exploring natural language processing and text classification.</p>
+          <p>A sentiment analysis tool that classifies text as positive, negative, or neutral using NLP techniques. Built as part of coursework exploring natural language processing and text classification using Orange.</p>
           <div class="tech-tags">
             <span>NLP</span>
             <span>Text Classification</span>
@@ -432,11 +643,24 @@ output_parser.parse(llm_output)</code></pre>
 
   <footer>
     <div class="container">
-      <p>Carl Bryant Carlos &copy; 2026</p>
+      <p>Carl Bryant Carlos &middot; BS Computer Science (AI), Mapúa University</p>
+      <p class="footer-certs">AWS Solutions Architect &middot; AWS AI Practitioner &middot; TOEIC 945</p>
     </div>
   </footer>
 
   <script>
+    // Dark mode toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark');
+      }
+    })();
+
     // Image carousel
     function changeImage(carouselId, direction) {
       const carousel = document.getElementById(carouselId);
@@ -449,33 +673,108 @@ output_parser.parse(llm_output)</code></pre>
       counter.textContent = (currentIndex + 1) + ' / ' + images.length;
     }
 
-    // Code output tab switching
+    // Code output tab switching with keyboard accessibility
     document.querySelectorAll('.block-tabs').forEach(tabs => {
-      tabs.querySelectorAll('.block-tab').forEach((tab, index) => {
+      tabs.setAttribute('role', 'tablist');
+      const tabEls = tabs.querySelectorAll('.block-tab');
+      const block = tabs.closest('.code-output-block');
+      const panels = block.querySelectorAll('.block-content');
+
+      tabEls.forEach((tab, index) => {
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
+        tab.setAttribute('aria-selected', tab.classList.contains('active'));
+        tab.setAttribute('aria-controls', panels[index].id);
+        panels[index].setAttribute('role', 'tabpanel');
+        panels[index].setAttribute('aria-labelledby', 'tab-' + index);
+
         tab.addEventListener('click', () => {
-          const block = tabs.closest('.code-output-block');
-          block.querySelectorAll('.block-tab').forEach(t => t.classList.remove('active'));
-          block.querySelectorAll('.block-content').forEach(c => c.classList.remove('active'));
-          tab.classList.add('active');
-          block.querySelectorAll('.block-content')[index].classList.add('active');
+          activateTab(tabEls, panels, index);
+        });
+
+        tab.addEventListener('keydown', (e) => {
+          let newIndex = index;
+          if (e.key === 'ArrowRight') newIndex = (index + 1) % tabEls.length;
+          else if (e.key === 'ArrowLeft') newIndex = (index - 1 + tabEls.length) % tabEls.length;
+          else if (e.key === 'Home') newIndex = 0;
+          else if (e.key === 'End') newIndex = tabEls.length - 1;
+          else return;
+          e.preventDefault();
+          activateTab(tabEls, panels, newIndex);
+          tabEls[newIndex].focus();
         });
       });
     });
 
-    // Lightbox
-    function openLightbox(src) {
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox').classList.add('active');
-      document.body.style.overflow = 'hidden';
+    function activateTab(tabs, panels, index) {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); t.setAttribute('tabindex', '-1'); });
+      panels.forEach(p => p.classList.remove('active'));
+      tabs[index].classList.add('active');
+      tabs[index].setAttribute('aria-selected', 'true');
+      tabs[index].setAttribute('tabindex', '0');
+      panels[index].classList.add('active');
     }
 
-    function closeLightbox() {
+    // Lightbox
+    let lightboxImages = [];
+    let lightboxIndex = 0;
+
+    function openLightbox(src, allImages) {
+      lightboxImages = allImages || [src];
+      lightboxIndex = lightboxImages.indexOf(src);
+      if (lightboxIndex === -1) lightboxIndex = 0;
+
+      document.getElementById('lightbox-img').src = lightboxImages[lightboxIndex];
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      updateLightboxCounter();
+    }
+
+    function closeLightbox(e) {
+      if (e) e.stopPropagation();
       document.getElementById('lightbox').classList.remove('active');
       document.body.style.overflow = '';
     }
 
+    function navigateLightbox(e, dir) {
+      if (e) e.stopPropagation();
+      lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+      document.getElementById('lightbox-img').src = lightboxImages[lightboxIndex];
+      updateLightboxCounter();
+    }
+
+    function updateLightboxCounter() {
+      const counter = document.getElementById('lightbox-counter');
+      if (lightboxImages.length > 1) {
+        counter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+        counter.style.display = 'block';
+      } else {
+        counter.style.display = 'none';
+      }
+    }
+
+    // Swipe support for lightbox
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lightboxEl = document.getElementById('lightbox');
+
+    lightboxEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightboxEl.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) navigateLightbox(null, 1);  // swipe left → next
+        else navigateLightbox(null, -1);           // swipe right → prev
+      }
+    }, { passive: true });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLightbox(null, -1);
+      if (e.key === 'ArrowRight') navigateLightbox(null, 1);
     });
   </script>
 
