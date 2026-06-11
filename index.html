@@ -15,11 +15,11 @@
 <body>
 
   <!-- Lightbox Modal -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+  <div id="lightbox" class="lightbox" onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Image lightbox">
     <img id="lightbox-img" src="" alt="Full size" onclick="event.stopPropagation()">
-    <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
-    <button class="lightbox-prev" onclick="navigateLightbox(event, -1)">&#8592;</button>
-    <button class="lightbox-next" onclick="navigateLightbox(event, 1)">&#8594;</button>
+    <button class="lightbox-close" onclick="closeLightbox(event)" aria-label="Close lightbox">&times;</button>
+    <button class="lightbox-prev" onclick="navigateLightbox(event, -1)" aria-label="Previous image">&#8592;</button>
+    <button class="lightbox-next" onclick="navigateLightbox(event, 1)" aria-label="Next image">&#8594;</button>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
@@ -31,15 +31,15 @@
       <p class="tagline">Building intelligent platforms with LLMs, RAG pipelines, and agentic workflows.</p>
       <div class="links">
         <a href="https://www.linkedin.com/in/carlcarlos/" target="_blank">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
         <a href="Carlos - Resume.pdf" target="_blank">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Resume
         </a>
         <a href="mailto:cbacarlos@mymail.mapua.edu.ph">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           Email
         </a>
       </div>
@@ -50,14 +50,14 @@
     </div>
   </header>
 
-  <section class="about">
+  <section class="about fade-in">
     <div class="container">
       <h2>About Me</h2>
-      <p>Hello. My background is in Computer Science with specialization in AI from Mapúa University, with hands-on experience building end-to-end ML pipelines, RAG systems, and agentic workflows. During my IT internship at Geoplan Philippines, I worked directly with clients on IoT proof-of-concept deployments, integrated devices into their monitoring platforms, and delivered technical presentations for both internal teams and client stakeholders. I've earned AWS certifications in solutions architecture and AI, and my thesis covers few-shot occupancy detection using Wi-Fi sensing. I love working with a team to build AI solutions that solve real problems. If my background aligns with what you're looking for, I'd love to chat.</p>
+      <p>Hello. My background is in Computer Science with specialization in AI from Mapúa University, with hands-on experience building end-to-end ML pipelines, RAG systems, and agentic workflows. During my IT internship at Geoplan Philippines, I worked directly with clients on IoT proof-of-concept deployments, integrated devices into their monitoring platforms, and delivered technical presentations for both internal teams and client stakeholders. I've earned AWS certifications in solutions architecture and AI, and my thesis covers few-shot occupancy detection using Wi-Fi sensing. I love working with a team to build AI solutions that solve real problems. If my background aligns with what you're looking for, I'd love to chat.      </p>
     </div>
   </section>
 
-  <section class="skills">
+  <section class="skills fade-in">
     <div class="container">
       <h2>Skills</h2>
       <div class="skills-grid-layout">
@@ -122,7 +122,7 @@
       <p class="projects-intro">End-to-end AI/ML projects spanning few-shot learning with Wi-Fi sensing, retrieval-augmented generation, and agentic workflows.</p>
 
       <!-- Project 1: Thesis — Few-Shot Occupancy Detection -->
-      <div class="project-card">
+      <div class="project-card fade-in">
         <div class="project-visual">
           <div class="code-output-block">
             <div class="block-tabs">
@@ -270,7 +270,7 @@ M7 best fold (K=10, Fold 2):
       </div>
 
       <!-- Project 2: Agentic RAG -->
-      <div class="project-card">
+      <div class="project-card fade-in">
         <div class="project-visual">
           <div class="code-output-block">
             <div class="block-tabs">
@@ -283,7 +283,7 @@ M7 best fold (K=10, Fold 2):
                 <span class="block-label">Agent source selection</span>
                 <pre><code><span class="kw">def</span> <span class="fn">sel_source</span>(query, output_widget):
     query_embedding = embedder(query)
-    best_source, best_sim = <span class="str">""</span>, <span class="num">0.0</span>
+    best_source, best_sim, best_index = <span class="str">""</span>, <span class="num">0.0</span>, <span class="num">0</span>
 
     <span class="kw">for</span> i, doc <span class="kw">in</span> enumerate(documents_data):
         sim = cos_similarity(
@@ -292,6 +292,7 @@ M7 best fold (K=10, Fold 2):
         )
         <span class="kw">if</span> sim > best_sim:
             best_sim = sim
+            best_source = doc[<span class="str">'name'</span>]
             best_index = i
 
     <span class="kw">return</span> best_source, best_sim, best_index</code></pre>
@@ -398,18 +399,18 @@ Relevance: 92.41%</code></pre>
             <span>ipywidgets</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-primary">
+            <a href="https://colab.research.google.com/github/sagracious/ai-portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
               Open in Colab
             </a>
-            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://github.com/sagracious/ai-portfolio/blob/main/notebooks/agentic_rag.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
           </div>
           <p class="api-note">Requires a Google AI Studio API key (free at aistudio.google.com)</p>
         </div>
       </div>
 
       <!-- Project 3: YouTube Chat -->
-      <div class="project-card reverse">
+      <div class="project-card reverse fade-in">
         <div class="project-visual">
           <div class="code-output-block">
             <div class="block-tabs">
@@ -441,7 +442,7 @@ engine.</code></pre>
             </div>
             <div class="block-content" id="yt-ex2">
               <div class="block-code">
-                <span class="block-label">Multi-video context retrieval</span>
+                <span class="block-label">Context retrieval + query</span>
                 <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=_IOh0S_L3C4"</span>
 db = create_db_from_youtube_video_url(video_url)
 
@@ -461,7 +462,7 @@ lack of sufficient training data.</code></pre>
             </div>
             <div class="block-content" id="yt-ex3">
               <div class="block-code">
-                <span class="block-label">Cross-video Q&A</span>
+                <span class="block-label">Thematic Q&A across videos</span>
                 <pre><code>video_url = <span class="str">"https://youtube.com/watch?v=P-TANCVoHlc"</span>
 db = create_db_from_youtube_video_url(video_url)
 
@@ -496,18 +497,18 @@ to one's life.</code></pre>
             <span>Vector Search</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-primary">
+            <a href="https://colab.research.google.com/github/sagracious/ai-portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
               Open in Colab
             </a>
-            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://github.com/sagracious/ai-portfolio/blob/main/notebooks/youtube_chat.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
           </div>
           <p class="api-note">Requires an OpenAI API key</p>
         </div>
       </div>
 
       <!-- Project 4: LangChain Cookbook -->
-      <div class="project-card">
+      <div class="project-card fade-in">
         <div class="project-visual">
           <div class="code-output-block">
             <div class="block-tabs">
@@ -567,8 +568,10 @@ with native speakers.</code></pre>
         description=<span class="str">"Explanation of the game"</span>),
 ]
 
-output_parser = StructuredOutputParser
+output_parser = (
+    StructuredOutputParser
     .from_response_schemas(response_schemas)
+)
 
 llm_output = llm(prompt.format(user_input=<span class="str">"Dota 2"</span>))
 output_parser.parse(llm_output)</code></pre>
@@ -599,27 +602,27 @@ output_parser.parse(llm_output)</code></pre>
             <span>Prompt Engineering</span>
           </div>
           <div class="project-links">
-            <a href="https://colab.research.google.com/github/sagracious/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-primary">
+            <a href="https://colab.research.google.com/github/sagracious/ai-portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
               Open in Colab
             </a>
-            <a href="https://github.com/sagracious/portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
+            <a href="https://github.com/sagracious/ai-portfolio/blob/main/notebooks/langchain_cookbook.ipynb" target="_blank" class="btn btn-secondary">View Source</a>
           </div>
           <p class="api-note">Requires an OpenAI API key</p>
         </div>
       </div>
 
       <!-- Project 5: Sentiment Analyzer -->
-      <div class="project-card reverse">
+      <div class="project-card reverse fade-in">
         <div class="project-visual">
           <div class="image-carousel" id="sent-carousel">
             <img src="images/sentiment-act3.png" alt="Sentiment Analyzer Activity" class="project-img active" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
             <img src="images/sentiment-out2.png" alt="Sentiment Analyzer Output 2" class="project-img" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
             <img src="images/sentiment-out1.png" alt="Sentiment Analyzer Output 1" class="project-img" loading="lazy" onclick="openLightbox(this.src, ['images/sentiment-act3.png','images/sentiment-out2.png','images/sentiment-out1.png'])">
             <div class="img-nav">
-              <button class="nav-btn" onclick="changeImage('sent-carousel', -1)">&#8592;</button>
+              <button class="nav-btn" onclick="changeImage('sent-carousel', -1)" aria-label="Previous image">&#8592;</button>
               <span class="img-counter">1 / 3</span>
-              <button class="nav-btn" onclick="changeImage('sent-carousel', 1)">&#8594;</button>
+              <button class="nav-btn" onclick="changeImage('sent-carousel', 1)" aria-label="Next image">&#8594;</button>
             </div>
             <p class="img-hint">Click image to enlarge</p>
           </div>
@@ -656,10 +659,20 @@ output_parser.parse(llm_output)</code></pre>
     }
     (function() {
       const saved = localStorage.getItem('theme');
-      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      if (saved === 'dark') {
         document.body.classList.add('dark');
       }
     })();
+
+    // Scroll fade-in
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    }
 
     // Image carousel
     function changeImage(carouselId, direction) {
@@ -674,19 +687,22 @@ output_parser.parse(llm_output)</code></pre>
     }
 
     // Code output tab switching with keyboard accessibility
+    let blockCounter = 0;
     document.querySelectorAll('.block-tabs').forEach(tabs => {
       tabs.setAttribute('role', 'tablist');
       const tabEls = tabs.querySelectorAll('.block-tab');
       const block = tabs.closest('.code-output-block');
       const panels = block.querySelectorAll('.block-content');
+      const blockId = 'block-' + blockCounter++;
 
       tabEls.forEach((tab, index) => {
         tab.setAttribute('role', 'tab');
+        tab.setAttribute('id', blockId + '-tab-' + index);
         tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
         tab.setAttribute('aria-selected', tab.classList.contains('active'));
         tab.setAttribute('aria-controls', panels[index].id);
         panels[index].setAttribute('role', 'tabpanel');
-        panels[index].setAttribute('aria-labelledby', 'tab-' + index);
+        panels[index].setAttribute('aria-labelledby', blockId + '-tab-' + index);
 
         tab.addEventListener('click', () => {
           activateTab(tabEls, panels, index);
@@ -726,14 +742,14 @@ output_parser.parse(llm_output)</code></pre>
 
       document.getElementById('lightbox-img').src = lightboxImages[lightboxIndex];
       document.getElementById('lightbox').classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('no-scroll');
       updateLightboxCounter();
     }
 
     function closeLightbox(e) {
       if (e) e.stopPropagation();
       document.getElementById('lightbox').classList.remove('active');
-      document.body.style.overflow = '';
+      document.body.classList.remove('no-scroll');
     }
 
     function navigateLightbox(e, dir) {
@@ -747,9 +763,9 @@ output_parser.parse(llm_output)</code></pre>
       const counter = document.getElementById('lightbox-counter');
       if (lightboxImages.length > 1) {
         counter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
-        counter.style.display = 'block';
+        counter.classList.add('visible');
       } else {
-        counter.style.display = 'none';
+        counter.classList.remove('visible');
       }
     }
 
@@ -772,6 +788,7 @@ output_parser.parse(llm_output)</code></pre>
     }, { passive: true });
 
     document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') navigateLightbox(null, -1);
       if (e.key === 'ArrowRight') navigateLightbox(null, 1);
