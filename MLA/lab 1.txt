@@ -1,0 +1,639 @@
+Analyze and Prepare Data with Amazon SageMaker Data Wrangler and Amazon EMR
+SPL-TF-300-MLDPML-1 - Version 1.0.6
+
+© 2025 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.
+
+Note: Do not include any personal, identifying, or confidential information into the lab environment. Information entered may be visible to others.
+
+Corrections, feedback, or other questions? Contact us at AWS Training and Certification.
+
+Lab overview
+A local not-for-profit citizen advocacy group promotes government assistance services to qualified citizens in their region. The advocacy group is preparing to promote a newly established assistance service. One of the key eligibility criteria is that an individual cannot have an annual income that exceeds 50,000 USD. The citizen advocacy group has demographic data that includes citizens’ education and employment, but only a subset of the data includes income data. The citizen advocacy group has asked AnyCompany Consulting to deliver a machine learning (ML) solution that can predict if an individual is likely to make less than 50,000 USD, based on the other demographic data. This solution will help them to make the best use of their limited budget by targeting promotions to citizens who are most likely to be eligible for the service. AnyCompany Consulting wants you to visualize and prepare the data. After the data is cleaned, they want you to export the data to their Amazon Simple Storage Service (Amazon S3) bucket.
+
+In addition to that, you have some datasets that AnyCompany Consulting wants you to bring into Amazon SageMaker later that require data preparation at scale. You want to test how Apache Spark on Amazon EMR can be integrated with Amazon SageMaker Studio to process data and prepare it.
+
+In this lab, you learn how to visualize and prepare data, and complete several transformations on the dataset in SageMaker Data Wrangler. After the data is transformed, you learn to export the data back to Amazon S3. You also learn how to discover and securely connect to an EMR cluster directly from SageMaker Studio. You use a SageMaker Studio notebook to visually discover, authenticate with, and connect to an EMR cluster. You then query an Apache Hive table on Amazon EMR using Apache Spark.
+
+Objectives
+After completing this lab, you should be able to do the following:
+
+Choose effective methods for visualizing data
+Explain the value of data cleaning and transformation
+Describe how to process missing values, outliers, duplicated data, etc.
+Define Key Encoding techniques
+Describe how to ingest and transform data into Amazon Sagemaker Data Wrangler
+Describe how to transform data using Spark on Amazon EMR
+Technical knowledge prerequisites
+To successfully complete this lab, you should have knowledge of:
+
+Basic navigation of the AWS Management Console.
+An understanding of database concepts, MySQL, and database availability.
+Icon key
+Various icons are used throughout this lab to call attention to different types of instructions and notes. The following list explains the purpose for each icon:
+
+ Caution: Information of special interest or importance (not so important to cause problems with the equipment or data if you miss it, but it could result in the need to repeat certain steps).
+ Learn more: Where to find more information.
+ Note: A hint, tip, or important guidance.
+ Task complete: A conclusion or summary point in the lab.
+Start lab
+To launch the lab, at the top of the page, choose Start Lab.
+
+ Caution: You must wait for the provisioned AWS services to be ready before you can continue.
+
+To open the lab, choose Open Console .
+
+You are automatically signed in to the AWS Management Console in a new web browser tab.
+
+ Warning: Do not change the Region unless instructed.
+
+Common sign-in errors
+Error: Choosing Start Lab has no effect
+In some cases, certain pop-up or script blocker web browser extensions might prevent the Start Lab button from working as intended. If you experience an issue starting the lab:
+
+Add the lab domain name to your pop-up or script blocker’s allow list or turn it off.
+Refresh the page and try again.
+Lab environment
+The basic architecture of this lab is that two similar datasets have been loaded into an Amazon S3 bucket. An Amazon SageMaker Studio instance with access to those datasets has been created for your use, as well as an Amazon EMR cluster.
+
+AWS services not used in this lab
+AWS service capabilities used in this lab are limited to what the lab requires. Expect errors when accessing other services or performing actions beyond those provided in this lab guide.
+
+Task 1: Import, visualize, and perform a preliminary analysis of the data with SageMaker Data Wrangler
+Before the demographic data can be transformed and used effectively to build an ML model, it must be analyzed. AnyCompany Consulting wants you to take the demographic data, import it into SageMaker Data Wrangler and analyze the data. Based on the findings from your analysis in this task, you transform the data in the next task.
+
+SageMaker Data Wrangler is a SageMaker Studio feature for exploration and transformation of image data and tabular data for ML use cases without coding. It includes built-in data analysis capabilities for charts and time-saving model analysis capabilities such as feature importance, target leakage, and model explainability.
+
+In this task, you import and analyze data with a graphical interface by using a notebook and SageMaker Data Wrangler.
+
+ Learn more: Refer to Prepare ML Data with Amazon SageMaker Data Wrangler in the Additional resources section for more information about Amazon SageMaker Data Wrangler.
+
+Task 1.1: Access SageMaker Data Wrangler in SageMaker Canvas, import data from Amazon S3, and rename the data flow
+A SageMaker Data Wrangler flow is a series of data preparation steps that you perform on your data. Each transformation is done using a transform step. The flow has a series of nodes that represent importing your data, analyzing your data, and transforming your data.
+
+In this task, you access and create a new SageMaker Data Wrangler flow in SageMaker Canvas.
+
+Copy the SageMakerCanvasUrl value that is listed to the left of these instructions.
+
+Open a new browser tab, and paste the SageMakerCanvasUrl into the address bar.
+
+Press Enter.
+
+Wait for 1-2 minutes till the Canvas page loads up.
+
+In the left navigation pane, choose Data Wrangler.
+
+On the Data Wrangler page, choose Import and prepare .
+
+From the drop-down menu, choose Tabular.
+
+On the Import tabular data page, for the Select a data source, select Amazon S3.
+
+In the list of buckets, choose the Amazon S3 bucket that matches the LabDataBucket value that is listed to the left of these instructions.
+
+Choose the scripts folder, choose the data folder.
+
+Select the adult_data.csv file.
+
+Choose Next.
+
+Choose Import.
+
+You have imported data from an Amazon S3 source into SageMaker Data Wrangler.
+
+In the left navigation pane, choose Data Wrangler.
+
+On the Data Wrangler page, under Flow name column, you should see New data flow date time.flow created.
+
+Hover over the New data flow date time.flow and on the right side of the date & time stamp, choose the  vertical ellipsis to rename the data flow.
+
+Choose Rename and in the New data flow date time.flow box, enter DataWranglerLab.
+
+Task 1.2: Get insights on the data structure and quality
+SageMaker Data Wrangler can provide insights and in-depth reports to quickly analyze your datasets.
+
+In this task, you use SageMaker Data Wrangler to generate an initial analysis of the data.
+
+Choose the DataWranglerLab.flow link to go to the Data flow page.
+
+On the DataWranglerLab.flow page, choose the Analyses tab.
+
+You can use a Data Quality and Insights Report to perform an analysis of the data that you imported into SageMaker Data Wrangler. This report helps you know the best ways to clean and process your data.
+
+In the Create analysis section, configure the following settings:
+
+For Analysis type, select Data Quality And Insights Report.
+For Analysis name, enter Data-Quality-Insights.
+For Target column, select income.
+For Problem type, choose Classification.
+For Data size, ensure Sampled dataset is selected.
+To save the Data Quality And Insights Report analysis report, choose Create.
+
+A summary from the analysis of the data is displayed after a brief wait.
+
+Take some time to review the following sections of the Data Quality And Insights Report:
+
+Summary: This section shows important dataset statistics, including the number of features (columns), the percent of data that is missing, the number of duplicate rows, and the different data types identified for each feature.
+Duplicate rows: This section shows many of the records that are likely duplicate data. If rows show up here, you might want to add a transformation that removes duplicate data.
+Anomalous samples: This section shows records that are anomalies in the dataset. SageMaker Data Wrangler models the data and shows records that have a high chance of being outliers.
+Target column: This section shows the distribution of the target column. If a target column is not equally distributed, you need to pay more attention to the records in each value to make sure you are not introducing bias into the model. If the target column is too unbalanced, you can add a transformation to balance the target column. For this lab, the target column is balanced enough to make an effective model.
+Quick model: This section shows metrics that are returned from a quick model of the data. You can use quick models to show how effective your transformations are at improving your model performance.
+Feature summary: This section shows the prediction power of each feature. Notice that fnlwgt and native_country have the lowest prediction power. You can add a transformation to remove these columns. This helps your model focus on the features that have a higher prediction power.
+Feature details: This section shows tables of metrics and graphs of each feature. Notice that these metrics and histograms are similar to the graphs that you viewed in the notebook.
+Definitions: This section includes definitions of most of the ML terms used in the Data Quality and Insights Report.
+Information generated from this report helps guide the transformations in the subsequent steps
+
+ Task complete: You have used SageMaker Data Wrangler to generate an initial analysis of the data.
+
+Task 2: Analyze and visualize the data
+You have used SageMaker Data Wrangler to perform a quick visualization and analysis of your data. Now, you want to study your target column to see if there are any additional problems with income that you want to address in your dataset. Specifically, you want to see if there are any problems with target leakage and how the target column is distributed across different columns in the dataset.
+
+In this task, you perform an analysis of the currently untransformed dataset using the Target Leakage and Histogram analysis types before applying any transformations.
+
+ Learn more: Refer to Analyze and Visualize in the Additional resources section for more information about SageMaker Data Wrangler analysis types.
+
+Task 2.1: Target leakage
+In this task, you use SageMaker Data Wrangler to check for target leakage in the data.
+
+Target leakage occurs when there is data in an ML training dataset that is strongly correlated with the target label but is not available in real-world data. For example, you might have a column in your dataset that serves as a proxy for the column that you want to predict with your model. SageMaker Data Wrangler calculates the predictive metric of receiver operating characteristic (ROC), which is computed individually for each column through cross validation to generate the target leakage report.
+
+Choose the + icon located next to Data Quality And Insights Report tab, to create a new analysis.
+
+In the Create analysis section, configure the following settings:
+
+For Analysis type, select Target Leakage.
+For Analysis name, enter Income-Target-Leakage.
+For Max features, enter 15.
+For Problem Type, ensure classification is selected.
+For Target, ensure income is selected.
+ Note: You might need to scroll down in the list to locate some parameters.
+
+To generate the Target Leakage analysis report, choose Preview.
+
+To save the Target Leakage analysis report, choose Create.
+
+The report shows that there is no indication of target leakage in your input dataset. However, native_country, and fnlwgt have 0.5 predictive ability of ROC. This ROC indicates that these features do not independently provide useful information toward predicting the target. Dropping uninformative columns from the dataset can increase the efficiency of your model training. Before making the decision to drop these features, you should consider whether these could add value when used in tandem with other features. If you want to create a new feature combination, you can create a custom formula or custom transform in SageMaker Data Wrangler. The fnlwgt and native_country columns are not useful for training your model. You can drop these columns from the dataset when you are adding your transformations.
+
+You have used SageMaker Data Wrangler to account for target leakage in the data.
+
+Task 2.2: Generating a histogram
+In this task, you use a histogram to gain insights into target label patterns inside the input dataset.
+
+Choose the + icon located next to Target Leakage tab, to create a new analysis.
+
+In the Create analysis section:
+
+For Analysis type, select Histogram.
+For Analysis name, enter Target-Label-Classification.
+For X axis, select income.
+For Color by, select race.
+For Facet by, select sex.
+ Note: This means that you want to plot histograms by income with the race factor reflected by a color legend and also faceted by sex.
+
+To generate the Histogram analysis report, choose Preview.
+
+To save the Histogram analysis report, choose Create.
+
+Histograms of the target column for sex and race are shown.
+
+ Task complete: You performed an analysis of the currently untransformed dataset using the Target Leakage and Histogram analysis types before applying any transformations.
+
+Task 3: Perform data transformations and export the datasets
+In the previous tasks, you visualized and analyzed the dataset. In your analysis, you found that there are several transformations that have to be conducted. In this task, you perform data transformations that address issues that you discovered in the dataset.
+
+In this task, you use SageMaker Data Wrangler transformations to prepare the dataset for training.
+
+ Learn more: Refer to Transform Data in the Additional resources section for more information about SageMaker Data Wrangler data transforms.
+
+Task 3.1: Drop columns and handle missing and duplicate values
+By using the target leakage analysis, you found that fnlwgt and native_country do not have strong predictive power, so you can drop the columns. When you looked at the histograms in the notebook, you saw that occupation and workclass are missing values. The Data Insights and Quality Report showed that there are duplicate records in your dataset.
+
+In this task, you drop the unnecessary fnlwgt, and native_country columns, remove rows with missing values, remove duplicate records, and clean any string values that might contain spaces to the right or left of the values.
+
+On the adult_data.csv page, choose Data tab.
+
+In the Steps pane, choose + Add transform.
+
+First, drop the unnecessary columns that have low prediction power.
+
+In the Add transform section, search for and choose Manage columns.
+
+In the Manage columns section, configure the following settings:
+
+For Transform, select Drop column.
+For Columns to drop, choose the following:
+fnlwgt
+native_country
+To drop the columns, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+Next, remove any records that have missing values.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Handle missing.
+
+In the Handle missing section, configure the following settings:
+
+For Transform, select Drop missing.
+For Input columns, choose the following:
+occupation
+workclass
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+Next, drop the duplicate information.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Manage rows.
+
+In the Manage rows section, for Transform, select Drop duplicates.
+
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+Finally, to correct any string value errors, remove leading and trailing spaces from the values in categorical columns.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Format string.
+
+In the Format strings section, configure the following settings:
+
+For Transform, select Strip left and right.
+For Input columns, choose the following:
+education
+income
+marital_status
+occupation
+race
+relationship
+sex
+workclass
+For Characters to remove, select the field and press the space bar key once. This removes the spaces on both the left and right side of the string.
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to transform and drop unnecessary columns from the dataset.
+
+Task 3.2: Transform the target column
+The goal for the model is to determine whether an individual is likely to make less than 50,000 USD. The target column already includes this information in a string format. You need to convert that string to a binary value so that the model training algorithms can process it correctly for your binary classification model. Replace the values of <=50k with 1 and the values of >50K with 0.
+
+In this task, you transform data in the target column, income.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Search and edit.
+
+In the Search and edit section, configure the following settings:
+
+For Transform, select Find and replace substring.
+For Input column, choose income.
+For Pattern, enter <=50K.
+For Replacement string, enter 1.
+To apply the transform, choose Preview.
+
+All <=50K values in the target column have been replaced with 1.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Search and edit.
+
+In the Search and edit section, configure the following settings:
+
+For Transform, select Find and replace substring.
+For Input column, choose income.
+For Pattern, enter >50K.
+For Replacement string, enter 0.
+To apply the transform, choose Preview.
+
+All >50K values in the target column have been replaced with 0.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to transform the income target column.
+
+Task 3.3: Handle outliers
+When you viewed the histograms in the notebook, you saw that there are outliers for capital_gain. Remove any values greater than 80000 and any values less than 0.
+
+In this task, you handle the outliers in the data.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Handle outliers.
+
+In the Handle outliers section, configure the following settings:
+
+For Transform, select Min-max numeric outliers.
+For Input columns, choose capital_gain.
+Expand the Advanced section.
+For Fix Method, select Remove.
+For Upper threshold, enter 80000.
+For Lower threshold, enter 0.
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to handle outliers in the grouped data.
+
+Task 3.4: Perform ordinal encoding
+The education_num column has values that range from 9 to 13. Use ordinal encoding to reset these columns to a range starting at 0. The education column has string values, but you want the model to interpret the range of education values. Use ordinal encoding to change the categories to integer values in a range starting at 0.
+
+ Note: The ordinal encoder turns a categorical feature into a numerical format. The labels are translated to integer values based on their ordinal relationship to each other.
+
+In this task, you use the encode categorical built-in transform named Ordinal encode to encode categories into an integer between 0 and the total number of categories in the input column that you select.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Encode categorical.
+
+In the Encode categorical section, configure the following settings:
+
+For Transform, select Ordinal encode.
+For Input columns, choose the following:
+education_num
+education
+occupation
+Expand the Advanced section.
+For Invalid handling strategy, select Skip.
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to perform an ordinal encode type of transform to the data.
+
+Task 3.5: Perform one-hot encoding
+Ordinal encoding can introduce bias in a model if used incorrectly. If a column contains labels that have equal value, like sex, use one-hot encoding instead, to turn the labels of a column into columns with labels of 0 for false and 1 for true. Transform the sex column into two columns, one for male and one for female, using one-hot encoding.
+
+ Note: The one-hot encoder turns a categorical feature into new columns that correspond with each label in the original column, each with values of 0 and 1.
+
+In this task, you perform one-hot encoding to transform the categorical variables into a more useable form for ML.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Encode categorical.
+
+In the Encode categorical section, configure the following settings:
+
+For Transform, select One-hot encode.
+For Input columns, choose the following:
+marital_status
+race
+relationship
+sex
+workclass
+Expand the Advanced section.
+For Invalid handling strategy, select Skip.
+For Output style, select Columns.
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to perform a categorical encode type of transform to the data.
+
+Task 3.6: Move the target column
+Some algorithms, such as XGBoost, require the target column to be the first column.
+
+In this task, you move the income column to the first column.
+
+ Learn more: Refer to Input/Output Interface for the XGBoost Algorithm in the Additional resources section for more information about XGBoost in SageMaker Studio.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Manage columns.
+
+In the Manage columns section, configure the following settings:
+
+For Transform, select Move column.
+For Move type, select Move to start.
+For Column to move, select income.
+To apply the transform, choose Preview.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+You have used SageMaker Data Wrangler to move the target column.
+
+Task 3.7: Explore the destination and export features
+In your SageMaker Data Wrangler flow, you can export some or all of the transformations that you have made to your data processing pipelines. SageMaker Data Wrangler gives you the ability to export your data to a location within an Amazon S3 bucket. You can specify the location using one of the following methods:
+
+Destination node – Where SageMaker Data Wrangler stores the data after it has processed it.
+Export to – Exports the data resulting from a transformation to Amazon S3.
+Export data – For small datasets, quickly export the data that you have transformed.
+In this task, you explore the various sources that SageMaker Data Wrangler can export data to.
+
+To return to the Data flow view, choose the Data flow tab located at the top.
+
+Choose the  icon next to the Move column icon at the end of your list of transforms.
+
+Select Export > option to view all the available options in
+
+Several options are available, including Add destination and Export via Jupyter notebook >.
+
+With Add destination, you can set Amazon S3 or SageMaker Feature Store as destinations for your processed data.
+With Export via Jupyter notebook >, you can export processed data to Amazon S3, Amazon SageMaker Pipelines, or Amazon SageMaker Feature Store by using JupyterNotebook. Or you can export code with Python Code, which completes the transformations that you just configured in the SageMaker Studio UI.
+In the next task, you split the data into Training, Validation, and Test sets and add a Destination node for each data set.
+
+You have explored the various sources that SageMaker Data Wrangler can export data to.
+
+Task 3.8: Export the data to an S3 bucket
+For this task, you are going to use Destination node to specify the location. If you want to output a series of data processing steps that you have performed to Amazon S3, you create a destination node. A destination node tells SageMaker Data Wrangler where to store the data after you have processed it. After you create a destination node, you create an Amazon SageMaker processing job to output the data. When you are using a destination node, it runs the computational resources needed to output the data that you have transformed to Amazon S3.
+
+You can use a destination node to export some or all of the transformations that you have made in your SageMaker Data Wrangler flow. You can use multiple destination nodes to export different transformations or sets of transformations.
+
+Before you can use Destination node, you need to create a Split data transformation to split datasets within SageMaker Data Wrangler. This transformation splits your dataset into training, test, and optionally validation datasets without you having to write any code.
+
+Training – Used to train an algorithm or ML model. The model iteratively uses the data and learns to provide the desired result.
+Validation – Introduces new data to the trained model. You can use a validation set to periodically measure model performance as training is happening, and also tune any hyperparameters of the model. Validation datasets are optional.
+Test – Used on the final trained model to assess its performance on unseen data. This helps determine how well the model generalizes.
+On the DataWranglerLab.flow page, choose Data tab.
+
+In the Steps pane, choose + Add transform.
+
+In the Add transform section, search for and choose Split data.
+
+For Transform, choose the default value Randomized split.
+
+ Note: Random split partitions data randomly into train, test, and, optionally validation datasets by using the percentage specified for each dataset. It ensures that the distribution of the data is similar in all datasets. Choose this option when you do not need to preserve the order of your input data. For example, consider a movie dataset where the dataset is sorted by genre and you are predicting the genre of the movie. A random split on this dataset ensures that the distribution of the data includes all genres in all three datasets.
+
+In the Splits section, configure the following settings:
+
+For Split name Train, set the Split percentage at 0.7.
+For Split name Test, set the Split percentage at 0.2.
+Choose the + icon in the Split name section to add an additional split.
+
+For Split name, enter Validation and for Split percentage, enter 0.1.
+
+ Note: The split percentage can be any value that you want, provided that all three splits add up to 1 (100%). You can also specify optional fields like Error threshold and Random seed. You can achieve an exact split by setting the error threshold to 0. A smaller error threshold can lead to more processing time for splitting the data. This allows you to control the trade-off between time and accuracy on the operation. The Random seed option is for reproducibility. If this is not specified, SageMaker Data Wrangler uses a default random seed value. You can leave it blank for the purpose of this task.
+
+To preview your data split, choose Preview.
+
+Choose the dropdown beside the Previewing: Randomized split and switch between Train, Test, and Validation to review the details of each split.
+
+To save the transform to your SageMaker Data Wrangler data flow file, choose Add.
+
+The Data flow page appears and shows a new Randomized split node with three Datasets.
+
+Choose the  vertical ellipsis next to the first Dataset: adult_data.csv (Train) icon at the end of your list of transforms.
+
+Choose Export > and then choose Add destination.
+
+In the Add a destination section, configure the following settings:
+
+For Amazon S3 location, Browse.
+In the list of buckets, open the Amazon S3 bucket that matches the LabDataBucket value that is listed to the left of these instructions.
+Navigate to the scripts/data subfolder, and select the train subfolder.
+Choose Apply.
+For Dataset name, choose adult data train.
+For Number of partitions, choose 1.
+Choose Add and export.
+Under the Export job settings, turn off the Auto job configuration toggle.
+In the SageMaker Processing job settings:
+For Job name, enter adult-data-train-job.
+Leave all other settings to defaults.
+On the Export to Amazon S3 page, choose Export.
+
+A new destination node is attached to your selected node in the data flow diagram.
+
+ Note: A confirmation dialog is displayed to state that the job is created successfully with the Processing Job named canvas-data-prep-adult-data-train-job.
+
+Choose the Copy job monitoring url from the confirmation dialog and open it in a new browser tab to monitor the progress of the job creation.
+
+ Note: The Status will change from InProgress to Completed to indicate job creation is complete. It may take up to 10 minutes for the processing to be completed.
+
+Return to the SageMaker Canavs console.
+
+Choose the  vertical ellipsis next to the second Dataset: adult_data.csv (Test) icon at the end of your list of transforms.
+
+Choose Export > and then choose Add destination.
+
+In the Add a destination section, configure the following settings:
+
+For Amazon S3 location, choose Browse.
+In the list of buckets, open the Amazon S3 bucket that matches the LabDataBucket value that is listed to the left of these instructions.
+Navigate to the scripts/data subfolder, and select the test subfolder.
+Choose Apply.
+For Dataset name, choose adult data test.
+For Number of partitions, choose 1.
+Choose Add and export.
+Under the Export job settings, turn off the Auto job configuration toggle.
+In the SageMaker Processing job settings:
+For Job name, enter adult-data-test-job.
+Leave all other settings to defaults.
+On the Export to Amazon S3 page, choose Export.
+
+A new destination node is attached to your selected node in the data flow diagram.
+
+ Note: A confirmation dialog is displayed to state that the job is created successfully with the Processing Job named canvas-data-prep-adult-data-test-job.
+
+Choose the Copy job monitoring url from the confirmation dialog and open it in a new browser tab to monitor the progress of the job creation.
+
+ Note: The Status will change from InProgress to Completed to indicate job creation is complete. It may take up to 10 minutes for the processing to be completed.
+
+ Caution: Before moving on to the next step, ensure that at least one of the processing jobs has finished.
+
+Return to the SageMaker Canavs console.
+
+Choose the  vertical ellipsis next to the third Dataset: adult_data.csv (Validation) icon at the end of your list of transforms.
+
+Choose Export > and then choose Add destination.
+
+In the Add a destination section, configure the following settings:
+
+For Amazon S3 location, choose Browse.
+In the list of buckets, open the Amazon S3 bucket that matches the LabDataBucket value that is listed to the left of these instructions.
+Navigate to the scripts/data subfolder, and select the validation subfolder.
+Choose Apply.
+For Dataset name, choose adult data validation.
+For Number of partitions, choose 1.
+Choose Add and export.
+Under the Export job settings, turn off the Auto job configuration toggle.
+In the SageMaker Processing job settings:
+For Job name, enter adult-data-validation-job.
+Leave all other settings to defaults.
+On the Export to Amazon S3 page, choose Export.
+
+A new destination node is attached to your selected node in the data flow diagram.
+
+ Note: A confirmation dialog is displayed to state that the job is created successfully with the Processing Job named canvas-data-prep-adult-data-train-job.
+
+Choose the Copy job monitoring url from the confirmation dialog and open it in a new browser tab to monitor the progress of the job creation.
+
+When the processing job is complete, the files are added to the Amazon S3 bucket. You do not need to wait for all the processing jobs to finish.
+
+ Task complete: You used SageMaker Data Wrangler transformations to prepare the dataset for training. Then you split and exported the data to Amazon S3.
+
+Task 4: Set up the environment
+In this task, you launch a SageMaker Studio application and access your lab resources.
+
+Copy the SageMakerStudioUrl value to the left of these instructions.
+
+Open a new browser tab, and then paste the SageMakerStudioUrl into the address bar.
+
+Press Enter.
+
+A new browser tab opens, taking you to the JuypterLab workspaces interface.
+
+ Note: It might take 1-2 minutes for the JupyterLab workspaces interface to load for the first time.
+
+Next, you clone a Git repository and open your lab repository folder.
+
+In the left menu bar, choose the Git icon.
+
+Choose Clone a Repository.
+
+The SageMaker Studio environment displays the Clone Git Repository window.
+
+For Git repository URL (.git):, copy and paste the CloneUrlForRepo value listed to the left of these instructions, and select the suggested url from the dropdown menu.
+
+Choose Clone.
+
+Wait for the repository cloning to complete.
+
+The SageMaker Studio environment opens the labxrepo folder when the clone completes.
+
+ Task complete: You have successfully launched SageMaker Studio and cloned a Git repository into the environment.
+
+Task 5: Connect to an EMR cluster
+In this task, you use a SageMaker Studio notebook to visually discover, authenticate with, and connect to an EMR cluster. By establishing this connection, you can use the notebook to interact with the data hosted on Amazon EMR.
+
+From the left navigation pane, open the labnotebook.ipynb notebook.
+
+In the upper–right area of the notebook, choose Python 3 (ipykernel) to get to the Select Kernel pop-up window and choose the SparkMagic PySpark kernel for your notebook.
+
+In the upper–right area of the notebook, choose Cluster.
+
+The SageMaker Studio environment displays the Connect to cluster window.
+
+On the Connect to cluster window, choose the EMR CLUSTERS tab.
+
+Choose the cluster with the name EMR-Cluster-LabX and cluster ID starting with j-.
+
+Choose Connect.
+
+The SageMaker Studio environment displays the Select credential type for “EMR-Cluster-LabX” window.
+
+In the Select credential type for “EMR-Cluster-LabX” dialog box, choose the No credential option.
+ Note: For this lab, for simplicity, you use a No-Auth authentication.
+
+Choose Connect.
+ Note: It takes approximately 1–2 minutes to connect to the cluster.
+
+This adds a code block to the active cell in the notebook and runs automatically to establish a connection.
+
+After the Spark application has started, a SparkSession available as ‘spark’ message is displayed in the notebook.
+
+ Task complete: You have connected the SageMaker Studio notebook to an Amazon EMR cluster.
+
+Task 6: Explore and query data from the SparkMagic PySpark kernel
+In this task, you perform exploratory data analysis using Apache Spark on the SparkMagic PySpark kernel.
+
+Carefully advance through the labnotebook.ipynb notebook. Run each code cell and review its output. To run a cell, select within the cell and press Shift + Enter or, at the top of the page, choose the Run button.
+When you have finished running the notebook, return here to end the lab.
+
+ Task complete: You have performed data analysis in the notebooks using the PySpark kernel.

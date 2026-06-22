@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, and agentic workflows built with Python, PyTorch, LangChain, and AWS.">
+  <meta name="description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, agentic workflows, and AWS ML data pipelines built with Python, PyTorch, LangChain, and SageMaker.">
   <meta property="og:title" content="Carl Bryant Carlos — AI/ML Engineer">
-  <meta property="og:description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, and agentic workflows built with Python, PyTorch, LangChain, and AWS.">
+  <meta property="og:description" content="AI/ML Engineer portfolio — few-shot learning, RAG pipelines, agentic workflows, and AWS ML data pipelines built with Python, PyTorch, LangChain, and SageMaker.">
   <meta property="og:type" content="website">
   <title>Carl Bryant Carlos — AI/ML Engineer</title>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c27e86f0f8c740878f001505d98c4471"}'></script><!-- End Cloudflare Web Analytics -->
@@ -89,7 +89,7 @@
         <div class="skill-card skill-card--cloud">
           <h3><span class="skill-card-icon">&#9729;</span> Cloud &amp; DevOps</h3>
           <div class="skill-card-tags">
-            <span class="skill-tag">AWS (EC2, S3, IAM)</span>
+            <span class="skill-tag">AWS (EC2, S3, SageMaker, EMR)</span>
             <span class="skill-tag">Docker</span>
             <span class="skill-tag">Git</span>
             <span class="skill-tag">GitHub Actions</span>
@@ -120,7 +120,7 @@
   <section class="projects">
     <div class="container">
       <h2>Projects</h2>
-      <p class="projects-intro">AI/ML projects from coursework and research, covering few-shot learning, retrieval-augmented generation, LLM-powered agents, and NLP pipelines.</p>
+      <p class="projects-intro">AI/ML projects from coursework and research, covering few-shot learning, retrieval-augmented generation, LLM-powered agents, NLP pipelines, and AWS ML data engineering.</p>
 
       <!-- Project 1: Thesis — Few-Shot Occupancy Detection -->
       <div class="project-card fade-in">
@@ -642,13 +642,132 @@ output_parser.parse(llm_output)</code></pre>
         </div>
       </div>
 
+      <!-- Project 6: AWS ML Data Pipeline -->
+      <div class="project-card fade-in">
+        <div class="project-visual">
+          <div class="code-output-block">
+            <div class="block-tabs">
+              <span class="block-tab active">Data Wrangler</span>
+              <span class="block-tab">EMR + Spark</span>
+              <span class="block-tab">Transforms</span>
+            </div>
+            <div class="block-content active" id="aws-ex1">
+              <div class="block-code">
+                <span class="block-label">Data quality + target leakage analysis</span>
+                <pre><code><span class="cm"># SageMaker Data Wrangler pipeline</span>
+<span class="cm"># Target Leakage (ROC per feature)</span>
+fnlwgt:         ROC = <span class="num">0.50</span>  <span class="cm"># drop</span>
+native_country: ROC = <span class="num">0.50</span>  <span class="cm"># drop</span>
+education:      ROC = <span class="num">0.89</span>  <span class="cm"># keep</span>
+occupation:     ROC = <span class="num">0.87</span>  <span class="cm"># keep</span>
+
+<span class="cm"># Data Quality Report</span>
+Features: <span class="num">14</span>  |  Missing: <span class="num">4.8%</span>
+Duplicates: <span class="num">24</span> rows  |  Outliers: <span class="num">cap_gain > 80K</span></code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Transform chain</span>
+                <pre><code>1. Drop columns: fnlwgt, native_country
+2. Drop missing: occupation, workclass
+3. Drop duplicates: <span class="num">24</span> rows removed
+4. Strip whitespace: <span class="num">8</span> categorical columns
+5. Binary encode: ≤50K→<span class="num">1</span>, >50K→<span class="num">0</span>
+6. Remove outliers: capital_gain <span class="num">[0, 80K]</span>
+7. Ordinal encode: education, occupation
+8. One-hot encode: sex, race, relationship,
+   marital_status, workclass
+9. Move target: income → first column
+10. Split: <span class="num">70/20/10</span> train/test/val</code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="aws-ex2">
+              <div class="block-code">
+                <span class="block-label">EMR cluster + PySpark query</span>
+                <pre><code><span class="cm"># Connect SageMaker Studio → EMR</span>
+<span class="cm"># via SparkMagic PySpark kernel</span>
+
+<span class="cm"># Query Apache Hive table on EMR</span>
+df = spark.sql(<span class="str">"""
+  SELECT education, occupation,
+         COUNT(*) as cnt,
+         AVG(capital_gain) as avg_gain
+  FROM adult_data
+  GROUP BY education, occupation
+  ORDER BY cnt DESC
+"""</span>)
+df.show()</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">Output</span>
+                <pre><code>+----------+-----------+-----+---------+
+| education| occupation| cnt| avg_gain|
++----------+-----------+-----+---------+
+| HS-grad  | Craft-repair|4942|   529.21|
+| Some-col | Prof-specialty|3287| 2105.84|
+| Bachelors| Exec-managerial|3189| 3012.18|
++----------+-----------+-----+---------+
+<span class="cm"># Exported to S3: train/test/val splits</span></code></pre>
+              </div>
+            </div>
+            <div class="block-content" id="aws-ex3">
+              <div class="block-code">
+                <span class="block-label">Encoding decisions</span>
+                <pre><code><span class="cm"># Ordinal: ordered categories</span>
+education_num: <span class="num">9</span>→<span class="num">0</span>, <span class="num">10</span>→<span class="num">1</span>, ... <span class="num">13</span>→<span class="num">4</span>
+education:     HS-grad→<span class="num">0</span>, Bachelors→<span class="num">1</span>, ...
+occupation:    Adm-clerical→<span class="num">0</span>, ...
+
+<span class="cm"># One-hot: equal-value categories</span>
+sex:      [Female=<span class="num">1,0</span>, Male=<span class="num">0,1</span>]
+race:     [Amer-Indian=<span class="num">1,0,0,0,0</span>, ...]
+workclass: [<span class="num">9</span> binary columns]</code></pre>
+              </div>
+              <div class="block-output">
+                <span class="block-label">S3 export destinations</span>
+                <pre><code>s3://bucket/scripts/data/
+  ├── train/
+  │   └── adult_data_train.csv (<span class="num">70%</span>)
+  ├── test/
+  │   └── adult_data_test.csv (<span class="num">20%</span>)
+  └── validation/
+      └── adult_data_val.csv (<span class="num">10%</span>)
+
+Processing jobs: <span class="num">3</span> SageMaker jobs
+Kernel: SparkMagic PySpark</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-header">
+            <h3>ML Data Pipeline with SageMaker &amp; EMR</h3>
+            <span class="project-type">AWS Builder Lab — ML Associate</span>
+          </div>
+          <p>End-to-end data preparation pipeline for income prediction using SageMaker Data Wrangler. Analyzed data quality, detected target leakage via ROC metrics, and built a 10-step transformation chain including column drops, missing value handling, duplicate removal, ordinal/one-hot encoding, and outlier removal.</p>
+          <p>Connected SageMaker Studio to an Amazon EMR cluster via SparkMagic PySpark kernel to query Apache Hive tables at scale. Exported cleaned train/test/validation splits to S3 for downstream model training.</p>
+          <div class="tech-tags">
+            <span>SageMaker Data Wrangler</span>
+            <span>Amazon EMR</span>
+            <span>Apache Spark</span>
+            <span>PySpark</span>
+            <span>Hive</span>
+            <span>Feature Engineering</span>
+            <span>S3</span>
+            <span>Data Wrangling</span>
+          </div>
+          <div class="project-links">
+            <img src="MLA/lab 1 - sagemaker data wrangler.png" alt="SageMaker Data Wrangler Pipeline" style="max-width: 100%; border-radius: 6px; margin-top: 8px; cursor: pointer;" loading="lazy" onclick="openLightbox(this.getAttribute('src'), ['MLA/lab 1 - sagemaker data wrangler.png'])">
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <footer>
     <div class="container">
       <p>Carl Bryant Carlos &middot; BS Computer Science (AI), Mapúa University</p>
-      <p class="footer-certs">AWS Solutions Architect &middot; AWS AI Practitioner &middot; TOEIC 945</p>
+      <p class="footer-certs">AWS Solutions Architect &middot; AWS AI Practitioner &middot; AWS ML Associate &middot; TOEIC 945</p>
     </div>
   </footer>
 
