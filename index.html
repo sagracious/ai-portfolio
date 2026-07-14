@@ -120,7 +120,7 @@
   <section class="projects">
     <div class="container">
       <h2>Projects</h2>
-      <p class="projects-intro">AI/ML projects from coursework and research, covering few-shot learning, retrieval-augmented generation, LLM-powered agents, NLP pipelines, and AWS ML data engineering.</p>
+      <p class="projects-intro">AI/ML projects from coursework and research, covering few-shot learning, retrieval-augmented generation, LLM-powered agents, NLP pipelines, and AWS ML engineering with SageMaker, EMR, and Pipelines.</p>
 
       <!-- Project 1: Thesis — Few-Shot Occupancy Detection -->
       <div class="project-card fade-in">
@@ -645,97 +645,9 @@ output_parser.parse(llm_output)</code></pre>
       <!-- Project 6: AWS ML Data Pipeline -->
       <div class="project-card fade-in">
         <div class="project-visual">
-          <div class="code-output-block">
-            <div class="block-tabs">
-              <span class="block-tab active">Data Wrangler</span>
-              <span class="block-tab">EMR + Spark</span>
-              <span class="block-tab">Transforms</span>
-            </div>
-            <div class="block-content active" id="aws-ex1">
-              <div class="block-code">
-                <span class="block-label">Data quality + target leakage analysis</span>
-                <pre><code><span class="cm"># SageMaker Data Wrangler pipeline</span>
-<span class="cm"># Target Leakage (ROC per feature)</span>
-fnlwgt:         ROC = <span class="num">0.50</span>  <span class="cm"># drop</span>
-native_country: ROC = <span class="num">0.50</span>  <span class="cm"># drop</span>
-education:      ROC = <span class="num">0.89</span>  <span class="cm"># keep</span>
-occupation:     ROC = <span class="num">0.87</span>  <span class="cm"># keep</span>
-
-<span class="cm"># Data Quality Report</span>
-Features: <span class="num">14</span>  |  Missing: <span class="num">4.8%</span>
-Duplicates: <span class="num">24</span> rows  |  Outliers: <span class="num">cap_gain > 80K</span></code></pre>
-              </div>
-              <div class="block-output">
-                <span class="block-label">Transform chain</span>
-                <pre><code>1. Drop columns: fnlwgt, native_country
-2. Drop missing: occupation, workclass
-3. Drop duplicates: <span class="num">24</span> rows removed
-4. Strip whitespace: <span class="num">8</span> categorical columns
-5. Binary encode: ≤50K→<span class="num">1</span>, >50K→<span class="num">0</span>
-6. Remove outliers: capital_gain <span class="num">[0, 80K]</span>
-7. Ordinal encode: education, occupation
-8. One-hot encode: sex, race, relationship,
-   marital_status, workclass
-9. Move target: income → first column
-10. Split: <span class="num">70/20/10</span> train/test/val</code></pre>
-              </div>
-            </div>
-            <div class="block-content" id="aws-ex2">
-              <div class="block-code">
-                <span class="block-label">EMR cluster + PySpark query</span>
-                <pre><code><span class="cm"># Connect SageMaker Studio → EMR</span>
-<span class="cm"># via SparkMagic PySpark kernel</span>
-
-<span class="cm"># Query Apache Hive table on EMR</span>
-df = spark.sql(<span class="str">"""
-  SELECT education, occupation,
-         COUNT(*) as cnt,
-         AVG(capital_gain) as avg_gain
-  FROM adult_data
-  GROUP BY education, occupation
-  ORDER BY cnt DESC
-"""</span>)
-df.show()</code></pre>
-              </div>
-              <div class="block-output">
-                <span class="block-label">Output</span>
-                <pre><code>+----------+-----------+-----+---------+
-| education| occupation| cnt| avg_gain|
-+----------+-----------+-----+---------+
-| HS-grad  | Craft-repair|4942|   529.21|
-| Some-col | Prof-specialty|3287| 2105.84|
-| Bachelors| Exec-managerial|3189| 3012.18|
-+----------+-----------+-----+---------+
-<span class="cm"># Exported to S3: train/test/val splits</span></code></pre>
-              </div>
-            </div>
-            <div class="block-content" id="aws-ex3">
-              <div class="block-code">
-                <span class="block-label">Encoding decisions</span>
-                <pre><code><span class="cm"># Ordinal: ordered categories</span>
-education_num: <span class="num">9</span>→<span class="num">0</span>, <span class="num">10</span>→<span class="num">1</span>, ... <span class="num">13</span>→<span class="num">4</span>
-education:     HS-grad→<span class="num">0</span>, Bachelors→<span class="num">1</span>, ...
-occupation:    Adm-clerical→<span class="num">0</span>, ...
-
-<span class="cm"># One-hot: equal-value categories</span>
-sex:      [Female=<span class="num">1,0</span>, Male=<span class="num">0,1</span>]
-race:     [Amer-Indian=<span class="num">1,0,0,0,0</span>, ...]
-workclass: [<span class="num">9</span> binary columns]</code></pre>
-              </div>
-              <div class="block-output">
-                <span class="block-label">S3 export destinations</span>
-                <pre><code>s3://bucket/scripts/data/
-  ├── train/
-  │   └── adult_data_train.csv (<span class="num">70%</span>)
-  ├── test/
-  │   └── adult_data_test.csv (<span class="num">20%</span>)
-  └── validation/
-      └── adult_data_val.csv (<span class="num">10%</span>)
-
-Processing jobs: <span class="num">3</span> SageMaker jobs
-Kernel: SparkMagic PySpark</code></pre>
-              </div>
-            </div>
+          <div class="image-carousel" id="lab1-carousel">
+            <img src="MLA/lab 1 - sagemaker data wrangler.png" alt="SageMaker Data Wrangler Pipeline" class="project-img active" loading="lazy" onclick="openLightbox(this.getAttribute('src'), ['MLA/lab 1 - sagemaker data wrangler.png'])">
+            <p class="img-hint">Click image to enlarge</p>
           </div>
         </div>
         <div class="project-info">
@@ -753,10 +665,58 @@ Kernel: SparkMagic PySpark</code></pre>
             <span>Hive</span>
             <span>Feature Engineering</span>
             <span>S3</span>
-            <span>Data Wrangling</span>
           </div>
-          <div class="project-links">
-            <img src="MLA/lab 1 - sagemaker data wrangler.png" alt="SageMaker Data Wrangler Pipeline" style="max-width: 100%; border-radius: 6px; margin-top: 8px; cursor: pointer;" loading="lazy" onclick="openLightbox(this.getAttribute('src'), ['MLA/lab 1 - sagemaker data wrangler.png'])">
+        </div>
+      </div>
+
+      <!-- Project 7: SageMaker Model Training -->
+      <div class="project-card reverse fade-in">
+        <div class="project-visual">
+          <div class="image-carousel" id="lab2-carousel">
+            <img src="MLA/Lab_2_Architecture.png" alt="Lab 2 Architecture" class="project-img active" loading="lazy" onclick="openLightbox(this.getAttribute('src'), ['MLA/Lab_2_Architecture.png'])">
+            <p class="img-hint">Click image to enlarge</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-header">
+            <h3>Train a Model with Amazon SageMaker</h3>
+            <span class="project-type">AWS Builder Lab — ML Associate</span>
+          </div>
+          <p>Trained XGBoost models for binary income classification using two approaches: SageMaker's built-in algorithm for quick prototyping, and script-mode with custom training scripts for advanced scenarios like K-fold cross-validation.</p>
+          <p>Configured a Hyperparameter Tuning Job with 20 training runs across 4 parallel jobs, optimizing for AUC. Best model achieved 90.2% AUC and was registered to the SageMaker Model Registry.</p>
+          <div class="tech-tags">
+            <span>SageMaker</span>
+            <span>XGBoost</span>
+            <span>Binary Classification</span>
+            <span>Hyperparameter Tuning</span>
+            <span>Script Mode</span>
+            <span>K-Fold CV</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 8: SageMaker Pipelines -->
+      <div class="project-card fade-in">
+        <div class="project-visual">
+          <div class="image-carousel" id="lab3-carousel">
+            <img src="MLA/lab 3.png" alt="SageMaker Pipeline" class="project-img active" loading="lazy" onclick="openLightbox(this.getAttribute('src'), ['MLA/lab 3.png'])">
+            <p class="img-hint">Click image to enlarge</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-header">
+            <h3>ML Workflow Orchestration with SageMaker Pipelines</h3>
+            <span class="project-type">AWS Builder Lab — ML Associate</span>
+          </div>
+          <p>Built an end-to-end automated ML workflow for customer churn prediction using SageMaker Pipelines. Orchestrated data loading, transformation, model training, evaluation, bias detection, and model registration through a single pipeline definition.</p>
+          <p>Integrated SageMaker Model Registry for version-controlled model management and SageMaker Clarify for pre/post-training bias detection. Pipeline outputs were visualized directly in SageMaker Studio.</p>
+          <div class="tech-tags">
+            <span>SageMaker Pipelines</span>
+            <span>Model Registry</span>
+            <span>SageMaker Clarify</span>
+            <span>Bias Detection</span>
+            <span>ML Orchestration</span>
+            <span>CI/CD for ML</span>
           </div>
         </div>
       </div>
@@ -881,11 +841,17 @@ Kernel: SparkMagic PySpark</code></pre>
 
     function updateLightboxCounter() {
       const counter = document.getElementById('lightbox-counter');
+      const prev = document.querySelector('.lightbox-prev');
+      const next = document.querySelector('.lightbox-next');
       if (lightboxImages.length > 1) {
         counter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
         counter.classList.add('visible');
+        prev.style.display = '';
+        next.style.display = '';
       } else {
         counter.classList.remove('visible');
+        prev.style.display = 'none';
+        next.style.display = 'none';
       }
     }
 
