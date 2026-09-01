@@ -1,0 +1,146 @@
+Monitor a Model for Data Drift
+SPL-TF-300-MLMLDD-1 - Version 1.0.12
+
+Lab overview
+AnyCompany Consulting has an abalone regression model in production. The company wants to monitor the data used in real-time inference and detect any data drift encountered in new data. If any data drift is detected, you need to automatically retrain the model.
+
+In this lab, you create a production endpoint with data capture activated, generate baseline statistics and constraints, create an Amazon SageMaker AI Model Monitor baseline processing job, set up CloudWatch alarms for SageMaker AI Model Monitor, view model performance, and start an automated workflow to retrain the model.
+
+Objectives
+By the end of this lab, you should be able to do the following:
+
+Activate data capture for a real-time endpoint.
+Generate baseline statistics and constraints.
+Create a SageMaker AI Model Monitor baseline processing job.
+Set up alerts and notification for data drift.
+Start an automatic model retraining workflow.
+
+Lab environment
+The following diagram shows the basic architecture of the lab environment:
+
+AWS architecture diagram showing all services used and how they are connected
+
+Image description: The preceding diagram depicts a production model connected to a SageMaker AI endpoint. The endpoint is configured to capture the data with SageMaker AI Data Capture. The requests and predictions are used with a SageMaker AI monitoring job to compare new inference records against a baseline that is processed from a dataset using a baseline processing job. The SageMaker AI monitoring job produces results, statistics, and violations, and is configured with a CloudWatch log group. A CloudWatch alarm is configured to send a notification to a Simple Notification Service (SNS) metric alarm topic if the new inference records are outside the set bounds from the baseline. A Lambda function is subscribed to the SNS topic and starts a Step Functions state machine workflow that retrains a model with the new data and deploys that new model to the production endpoint.
+
+Lab environment
+The following diagram shows the basic architecture of the lab environment:
+
+AWS architecture diagram showing all services used and how they are connected
+
+Image description: The preceding diagram depicts a production model connected to a SageMaker AI endpoint. The endpoint is configured to capture the data with SageMaker AI Data Capture. The requests and predictions are used with a SageMaker AI monitoring job to compare new inference records against a baseline that is processed from a dataset using a baseline processing job. The SageMaker AI monitoring job produces results, statistics, and violations, and is configured with a CloudWatch log group. A CloudWatch alarm is configured to send a notification to a Simple Notification Service (SNS) metric alarm topic if the new inference records are outside the set bounds from the baseline. A Lambda function is subscribed to the SNS topic and starts a Step Functions state machine workflow that retrains a model with the new data and deploys that new model to the production endpoint.
+
+AWS services not used in this lab
+AWS service capabilities used in this lab are limited to what the lab requires. Expect errors when accessing other services or performing actions beyond those provided in this lab guide.
+
+Task 1: Set up the environment
+In this task, you launch an Amazon SageMaker Studio application and access your lab resources.
+
+Copy the SageMakerStudioUrl value that is listed to the left of these instructions.
+
+Open a new browser tab, and paste the SageMakerStudioUrl into the address bar.
+
+Press Enter.
+
+A new browser tab opens, taking you to the JuypterLab workspaces interface.
+
+ Note: It might take 1–2 minutes for the JupyterLab workspaces interface to load for the first time.
+
+Next, you clone a Git repository and open your lab repository folder.
+
+On the Launcher page, choose Terminal to start the command line terminal.
+
+Terminal opens with a prompt similar to sagemaker-user@default:~$
+
+To clone the required repository, run the following command, replacing <CloneUrlForRepo> with the CloneUrlForRepo value listed to the left of these instructions:
+
+
+git clone <CloneUrlForRepo>
+Your command should look similar to:
+
+
+git clone https://git-codecommit.us-west-2.amazonaws.com/v1/repos/MLMLDDRepository
+Press Enter to run the command and clone the lab repository.
+
+The MLMLDDRepository folder is now displayed in the explorer pane on the left.
+
+Open the MLMLDDRepository folder.
+
+ Task complete: You have successfully launched SageMaker Studio, and cloned a Git repository into the environment.
+
+Task 2: Model monitoring
+AnyCompany Consulting wants model monitoring set up for their production models so they can detect any data drift from the new abalone study. If any drift is detected, they want the model retrained automatically.
+
+In this task, you implement SageMaker AI Model Monitoring with your production model and endpoint. You view model performance and build an automated solution to retrain the model if there is data drift.
+
+In the left navigation pane, open the lab_MLMLDD.ipynb notebook.
+
+The SageMaker Studio environment displays the Set up notebook environment window.
+
+In the Select Kernel window, select the following:
+
+Select Kernel: Python 3 (ipykernel)
+Choose Select.
+
+Carefully advance through the lab_MLMLDD.ipynb notebook. Run each code cell and view its output.
+
+To run a cell, select within the cell and press Shift+Enter or, at the top of the page, choose the Run button.
+
+ Task complete: You created a baseline and scheduled a continuous comparison of the real-time data with the baseline.
+
+Task 3: Review the automatic model retraining workflow
+In the notebook, you created a CloudWatch alarm that lets you know when data drift has ocurred. The CloudWatch alarm is connected to an Amazon Simple Notification Service (Amazon SNS) topic that invokes the Lambda function. The Lambda function starts a Step Functions state machine workflow, which automatically retrains the model.
+
+In this task, you review automatic model retraining workflow started by the CloudWatch alarm.
+
+At the top of the AWS Management Console, in the search bar, search for and choose CloudWatch.
+
+In the left navigation pane, expand Alarms and choose All alarms.
+
+Choose the BASELINE_DRIFT_FEATURE_DIAMETER alarm.
+
+Wait for the State to change to In alarm.
+
+ Note: This step takes approximately 2 to 3 minutes to complete.
+
+Now that the alarm State is In alarm, the training state machine is automatically invoked.
+
+At the top of the AWS Management Console, in the search bar, search for and choose Step Functions.
+
+Choose the state machine that contains TrainingStateMachine in its name.
+
+Choose the Definition tab.
+
+The definition loads. The graph currently has four steps between the Start and End steps.
+
+Image of the state machine graph with four steps
+
+Image description: The preceding diagram depicts a state machine graph with Start, SageMaker AI CreateTrainingJob, SageMaker AI CreateModel, SageMaker AI CreateEndpointConfig, SageMaker AI CreateEndpoint, and End steps.
+
+The following list details the major resources in the diagram:
+
+CreateTrainingJob: This step starts a model training job. After training completes, SageMaker AI saves the resulting model artifacts to an Amazon S3 location that you specify.
+CreateModel: This step creates a model in SageMaker AI. In the request, you name the model and describe a primary container. For the primary container, you specify the Docker image that contains inference code, artifacts (from the prior training job), and a custom environment map that the inference code uses when you deploy the model for predictions.
+CreateEndpointConfig: This step creates an endpoint configuration that SageMaker AI hosting services use to deploy models. In the configuration, you identify one or more models, created using the CreateModel API, to deploy and the resources that you want SageMaker AI to provision.
+CreateEndpoint: This step creates an endpoint using the endpoint configuration specified in the request. SageMaker AI uses the endpoint to provision resources and deploy models.
+Choose the Executions tab.
+
+In the Executions section, choose the name of the most recent execution.
+
+ Note: An execution should be listed at this point. If not, then refresh the page periodically until an execution is listed.
+
+In the Events section, notice that a number of events are outlined.
+
+You can see the progress of the state machine as each step runs.
+
+ Note: The workflow execution takes approximately 5 minutes and you do not need to wait for this process to complete.
+
+ Task complete: You have successfully reviewed the automatic model retraining workflow.
+
+Conclusion
+You have successfully done the following:
+
+Activated data capture for a real-time endpoint.
+Generated baseline statistics and constraints.
+Created a SageMaker AI Model Monitor baseline processing job.
+Set up alerts and notification for data drift.
+Started an automatic model retraining workflow.
